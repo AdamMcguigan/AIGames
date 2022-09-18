@@ -18,6 +18,7 @@ Game::Game() :
 	m_window{ sf::VideoMode{1920U, 1080U, 32U }, "SFML Game" },
 	m_exitGame{false} //when true game will exit
 {
+	//Initializing the sprites in the Game Constructor, when game gets created the images will be loaded for the Player and NPC
 	myPlayer.setupSprite();
 	myNPC.setupSprite();
 }
@@ -97,8 +98,20 @@ void Game::processKeys(sf::Event t_event)
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime)
 {
+	//Calling the movement functions for the Player and NPC 
 	myPlayer.movePlayer();
 	myNPC.moveNpc();
+
+	if (myPlayer.m_playerSprite.getPosition().x > 1920)
+	{
+		myPlayer.m_playerSprite.setPosition(20.0f, 300.0f);
+	}
+
+	if (myPlayer.m_playerSprite.getPosition().x < 0)
+	{
+		myPlayer.m_playerSprite.setPosition(1920.0f, 300.0f);
+	}
+
 	if (m_exitGame)
 	{
 		m_window.close();
@@ -110,9 +123,10 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear();
-	myPlayer.draw(m_window);
-	myNPC.draw(m_window);
+	m_window.clear(); //Clear the window
+	myPlayer.draw(m_window); //Drawing the player to the screen
+	myNPC.draw(m_window); //Drawing the NPC to the screen
+
 	m_window.display();
 }
 

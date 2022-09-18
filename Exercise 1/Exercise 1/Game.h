@@ -22,6 +22,8 @@ public:
 	/// main method for game
 	/// </summary>
 	void run();
+
+	//Creating instances of the Player and NPC
 	Player myPlayer;
 	NPC myNPC;
 

@@ -14,17 +14,18 @@ void Player::setupSprite()
 
 void Player::movePlayer()
 {
-	m_playerSprite.move(2.0f, 0.0f);
+	
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		m_velocity.x += 0.5f;
-		m_playerSprite.move(m_velocity);
+		speedValue += speedIncrease;
 	}
+
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
-		m_velocity.x -= 0.5f;
-		m_playerSprite.move(2, 0);
+		speedValue -= speedDecrease;
 	}
+
+	m_playerSprite.move(speedValue, 0);
 }
 
 void Player::draw(sf::RenderWindow& m_window)

@@ -9,12 +9,15 @@ public:
 	void setupSprite();
 	void movePlayer();
 
-private:
-	sf::Texture m_playerTexture; // texture used for sfml logo
-	sf::Sprite m_playerSprite; // sprite used for sfml logo
+	sf::Texture m_playerTexture; // Should be private, just want to setup boundary checks without creating 'Getter' methods
+	sf::Sprite m_playerSprite; // Should be private, just want to setup boundary checks without creating 'Getter' methods
 
-	sf::Vector2f m_velocity = {2.0f,0.0f};
-	float maxVelocity = 3;
+private:
+	float speedValue = 2;
+	float speedIncrease = 0.5;
+	float speedDecrease = 0.3;
+
+	
 	
 
 };

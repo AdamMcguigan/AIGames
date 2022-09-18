@@ -1,6 +1,8 @@
 ﻿  Game.cpp
+C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\Player.h(18,22): warning C4305: 'initializing': truncation from 'double' to 'float'
   Player.cpp
+C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\Player.h(18,22): warning C4305: 'initializing': truncation from 'double' to 'float'
   main.cpp
+C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\Player.h(18,22): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating Code...
-  LINK : C:\Users\gameuser\Desktop\AI in Games\Exercise 1\Debug\Exercise 1.exe not found or not built by the last incremental link; performing full link
-  Exercise 1.vcxproj -> C:\Users\gameuser\Desktop\AI in Games\Exercise 1\Debug\Exercise 1.exe
+  Exercise 1.vcxproj -> C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Debug\Exercise 1.exe

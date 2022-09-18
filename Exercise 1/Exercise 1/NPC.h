@@ -10,6 +10,7 @@ public:
 	void moveNpc();
 
 private:
+	int speedValue = 2;
 	sf::Texture m_npcTexture; // texture used for sfml logo
 	sf::Sprite m_npcSprite; // sprite used for sfml logo
 };
