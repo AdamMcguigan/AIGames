@@ -9,11 +9,13 @@ public:
 	void setupSprite();
 	void movePlayer();
 
+	float m_maxSpeed = 5.0f;
+	float speedValue = 2;
+
 	sf::Texture m_playerTexture; // Should be private, just want to setup boundary checks without creating 'Getter' methods
 	sf::Sprite m_playerSprite; // Should be private, just want to setup boundary checks without creating 'Getter' methods
 
 private:
-	float speedValue = 2;
 	float speedIncrease = 0.5;
 	float speedDecrease = 0.3;
 

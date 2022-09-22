@@ -18,11 +18,29 @@ void Player::movePlayer()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		speedValue += speedIncrease;
+		m_playerSprite.move(speedValue, 0);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 	{
 		speedValue -= speedDecrease;
+		m_playerSprite.move(speedValue, 0);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		m_playerSprite.move(-speedValue, 0);
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		m_playerSprite.move(speedValue, 0);
+	}
+
+	//checking if speed is greater than maxSpeed
+	if (speedValue > m_maxSpeed)
+	{
+		speedValue = m_maxSpeed;
 	}
 
 	m_playerSprite.move(speedValue, 0);
