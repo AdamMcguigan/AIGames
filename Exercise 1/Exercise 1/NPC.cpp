@@ -39,3 +39,22 @@ void NPC::checkBoundaries()
 		m_npcSprite.setPosition(1920.0f, 600.0f);
 	}
 }
+
+float NPC::getNewOrientation(float currentOrientation, float velocity)
+{
+	if (velocity > 0)
+	{
+		return atan2(m_npcSprite.getPosition().y, m_npcSprite.getPosition().x);
+	}
+	else
+	{
+		return currentOrientation;
+
+	}
+
+}
+
+void NPC::wander()
+{
+
+}
