@@ -4,13 +4,16 @@
 class NPC
 {
 public:
-	void update(sf::Time t_deltaTime);
+	void update();
 	void draw(sf::RenderWindow& m_window);
 	void setupSprite();
+
 	void moveNpc();
+	void checkBoundaries();
+
+	sf::Sprite m_npcSprite; 
 
 private:
-	int speedValue = 2;
-	sf::Texture m_npcTexture; // texture used for sfml logo
-	sf::Sprite m_npcSprite; // sprite used for sfml logo
+	sf::Texture m_npcTexture;
+	int speedValue = 3;
 };

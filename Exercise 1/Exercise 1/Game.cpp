@@ -58,6 +58,8 @@ void Game::run()
 		render(); // as many as possible
 	}
 }
+
+
 /// <summary>
 /// handle user and system events/ input
 /// get key presses/ mouse moves etc. from OS
@@ -99,18 +101,8 @@ void Game::processKeys(sf::Event t_event)
 void Game::update(sf::Time t_deltaTime)
 {
 	//Calling the movement functions for the Player and NPC 
-	myPlayer.movePlayer();
-	myNPC.moveNpc();
-
-	if (myPlayer.m_playerSprite.getPosition().x > 1920)
-	{
-		myPlayer.m_playerSprite.setPosition(20.0f, 300.0f);
-	}
-
-	if (myPlayer.m_playerSprite.getPosition().x < 0)
-	{
-		myPlayer.m_playerSprite.setPosition(1920.0f, 300.0f);
-	}
+	myPlayer.update();
+	myNPC.update();
 
 	if (m_exitGame)
 	{

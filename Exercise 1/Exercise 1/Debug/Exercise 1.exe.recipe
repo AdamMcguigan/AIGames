@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Debug\Exercise 1.exe</FullPath>
+      <FullPath>C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Debug\Exercise 1.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\ASSETS\FONTS\ariblk.ttf</FullPath>
+      <FullPath>C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\ASSETS\FONTS\ariblk.ttf</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
+      <FullPath>C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

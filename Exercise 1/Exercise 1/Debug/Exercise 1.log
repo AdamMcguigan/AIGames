@@ -1,6 +1,8 @@
 ﻿  Game.cpp
-C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\Player.h(20,22): warning C4305: 'initializing': truncation from 'double' to 'float'
-  Player.cpp
-C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Exercise 1\Player.h(20,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\Player.h(24,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+  NPC.cpp
+C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\NPC.cpp(27,19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  main.cpp
+C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\Player.h(24,22): warning C4305: 'initializing': truncation from 'double' to 'float'
   Generating Code...
-  Exercise 1.vcxproj -> C:\Users\adamm\Desktop\AI Games\AIGames\Exercise 1\Debug\Exercise 1.exe
+  Exercise 1.vcxproj -> C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Debug\Exercise 1.exe

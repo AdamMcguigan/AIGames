@@ -4,18 +4,22 @@
 class Player
 {
 public:
-	void update(sf::Time t_deltaTime);
+	void update();
 	void draw(sf::RenderWindow& m_window);
 	void setupSprite();
 	void movePlayer();
+	void checkRotation();
+	void checkMaxSpeed();
+	void checkBoundaries();
 
 	float m_maxSpeed = 5.0f;
 	float speedValue = 2;
 
-	sf::Texture m_playerTexture; // Should be private, just want to setup boundary checks without creating 'Getter' methods
-	sf::Sprite m_playerSprite; // Should be private, just want to setup boundary checks without creating 'Getter' methods
 
 private:
+	sf::Texture m_playerTexture;
+	sf::Sprite m_playerSprite; 
+
 	float speedIncrease = 0.5;
 	float speedDecrease = 0.3;
 

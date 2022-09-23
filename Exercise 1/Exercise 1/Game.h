@@ -23,6 +23,7 @@ public:
 	/// </summary>
 	void run();
 
+
 	//Creating instances of the Player and NPC
 	Player myPlayer;
 	NPC myNPC;

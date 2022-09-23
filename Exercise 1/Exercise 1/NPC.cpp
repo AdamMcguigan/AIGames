@@ -1,5 +1,11 @@
 #include "NPC.h"
 
+void NPC::update()
+{
+	checkBoundaries();
+	moveNpc();
+}
+
 void NPC::draw(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_npcSprite);
@@ -19,4 +25,17 @@ void NPC::setupSprite()
 void NPC::moveNpc()
 {
 	m_npcSprite.move(speedValue, 0);
+}
+
+void NPC::checkBoundaries()
+{
+	if (m_npcSprite.getPosition().x > 1920)
+	{
+		m_npcSprite.setPosition(20.0f, 600.0f);
+	}
+
+	if (m_npcSprite.getPosition().x < 0)
+	{
+		m_npcSprite.setPosition(1920.0f, 600.0f);
+	}
 }
