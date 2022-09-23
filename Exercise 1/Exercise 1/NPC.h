@@ -12,11 +12,12 @@ public:
 	void checkBoundaries();
 
 	float getNewOrientation(float currentOrientation, float velocity);
-	void wander();
-	sf::Sprite m_npcSprite; 
+	//void wander();
 	float m_velocity = 0.0f;
 
 private:
+	sf::Sprite m_npcSprite; 
 	sf::Texture m_npcTexture;
+
 	int speedValue = 3;
 };

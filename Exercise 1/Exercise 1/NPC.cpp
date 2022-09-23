@@ -53,8 +53,3 @@ float NPC::getNewOrientation(float currentOrientation, float velocity)
 	}
 
 }
-
-void NPC::wander()
-{
-
-}

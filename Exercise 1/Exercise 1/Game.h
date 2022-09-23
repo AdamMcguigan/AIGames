@@ -1,5 +1,4 @@
 /// <summary>
-/// author Pete Lowe May 2019
 /// you need to change the above line or lose marks
 /// </summary>
 #ifndef GAME_HPP
