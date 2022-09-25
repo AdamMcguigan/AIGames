@@ -4,27 +4,31 @@
 class Player
 {
 public:
-	void update();
-	void draw(sf::RenderWindow& m_window);
+	Player();
+
 	void setupSprite();
-	void movePlayer();
-	void checkRotation();
-	void checkMaxSpeed();
+	void movePlayer(sf::Time& t_deltaTime);
 	void checkBoundaries();
+	void CheckForInput();
+	void update(sf::Time& t_deltaTime);
+	void draw(sf::RenderWindow& m_window);
 
-	float m_maxSpeed = 5.0f;
-	float speedValue = 2;
-
+	sf::CircleShape radius;
+	float radiusF = 100.0f;
 
 private:
 	sf::Texture m_playerTexture;
-	sf::Sprite m_playerSprite; 
+	sf::Sprite m_playerSprite;
 
-	float speedIncrease = 0.5;
-	float speedDecrease = 0.3;
+	const float MAX_SPEED = 15.0f;
+	const float SPEED_INCREASE = 0.5f;
+	const float ROTATION_SPEED = 4.0f;
 
-	
-	
+	float m_calculateRadianAngle = 3.1415926536 / 180;
+	float m_speed = 3.0f;
+	float m_rotation = 0.0f;
+
+	sf::Vector2f m_velocity = { 0,0 };
 
 };
 

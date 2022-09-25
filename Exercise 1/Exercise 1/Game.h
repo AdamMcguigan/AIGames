@@ -11,6 +11,7 @@
 #include <SFML/Graphics.hpp>
 #include "Player.h"
 #include "NPC.h"
+#include "SeekEnemy.h"
 
 class Game
 {
@@ -24,11 +25,12 @@ public:
 
 
 	//Creating instances of the Player and NPC
-	Player myPlayer;
+	Player thePlayer;
 	NPC myNPC;
+	SeekEnemy mySeek;
 
 private:
-
+	bool updateWander = true;
 	void processEvents();
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);

@@ -1,55 +1,103 @@
 #include "NPC.h"
 
-void NPC::update()
+void NPC::update(sf::Time& t_deltaTime)
 {
+	//randomWanderRadius();
+	wander(t_deltaTime);
+	m_wanderText.setPosition(m_npcSprite.getPosition().x - 30,  m_npcSprite.getPosition().y);
 	checkBoundaries();
-	moveNpc();
 }
 
 void NPC::draw(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_npcSprite);
+	m_window.draw(m_wanderText);
 }
 
 void NPC::setupSprite()
 {
-	if (!m_npcTexture.loadFromFile("ASSETS\\IMAGES\\crocodile.png"))
+	if (!m_npcTexture.loadFromFile("ASSETS\\IMAGES\\WanderShip.png"))
 	{
 		// simple error message if previous call fails
 		std::cout << "problem loading logo" << std::endl;
 	}
+
+	if (!m_font.loadFromFile("ASSETS\\FONTS\\ariblk.ttf"))
+	{
+		std::cout << "problem loading arial black font" << std::endl;
+	}
 	m_npcSprite.setTexture(m_npcTexture);
-	m_npcSprite.setPosition(50.0f, 600.0f);
+	m_npcSprite.setRotation(m_rotation);
+	m_npcSprite.setScale(3, 3);
+	m_npcSprite.setOrigin(m_npcSprite.getGlobalBounds().width / 2, m_npcSprite.getGlobalBounds().height / 2);
+	m_npcSprite.setPosition(m_pos);
+
+	m_wanderText.setFont(m_font);
+	m_wanderText.setString("Wander");
+	m_wanderText.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
+	m_wanderText.setPosition(m_npcSprite.getPosition());
+	m_wanderText.setCharacterSize(20U);
+	m_wanderText.setOutlineColor(sf::Color::Black);
+	m_wanderText.setFillColor(sf::Color::White);
+	m_wanderText.setOutlineThickness(3.0f);
 }
 
-void NPC::moveNpc()
-{
-	m_npcSprite.move(speedValue, 0);
-}
 
 void NPC::checkBoundaries()
 {
-	if (m_npcSprite.getPosition().x > 1920)
+	if (m_npcSprite.getPosition().x > sf::VideoMode::getDesktopMode().width + m_npcSprite.getGlobalBounds().width)
 	{
-		m_npcSprite.setPosition(20.0f, 600.0f);
+		m_npcSprite.setPosition(-m_npcSprite.getGlobalBounds().width, m_npcSprite.getPosition().y);
+	}
+	else if (m_npcSprite.getPosition().x < -m_npcSprite.getGlobalBounds().width)
+	{
+		m_npcSprite.setPosition(sf::VideoMode::getDesktopMode().width + m_npcSprite.getGlobalBounds().width, m_npcSprite.getPosition().y);
 	}
 
-	if (m_npcSprite.getPosition().x < 0)
+
+	if (m_npcSprite.getPosition().y > sf::VideoMode::getDesktopMode().height + m_npcSprite.getGlobalBounds().height)
 	{
-		m_npcSprite.setPosition(1920.0f, 600.0f);
+		m_npcSprite.setPosition(m_npcSprite.getPosition().x, -m_npcSprite.getGlobalBounds().height);
+	}
+	else if (m_npcSprite.getPosition().y < -m_npcSprite.getGlobalBounds().height)
+	{
+		m_npcSprite.setPosition(m_npcSprite.getPosition().x, sf::VideoMode::getDesktopMode().height + m_npcSprite.getGlobalBounds().height);
 	}
 }
 
-float NPC::getNewOrientation(float currentOrientation, float velocity)
+void NPC::wander(sf::Time& t_deltaTime)
 {
-	if (velocity > 0)
-	{
-		return atan2(m_npcSprite.getPosition().y, m_npcSprite.getPosition().x);
-	}
-	else
-	{
-		return currentOrientation;
+	randomWanderRadius();
 
+	angle = m_npcSprite.getRotation();
+	angle = angle + randomInt;
+
+	if (angle == 360.0)
+	{
+		angle = 0;
+	}
+	if (angle == 0.0)
+	{
+		angle = 359.0;
 	}
 
+	std::cout << "Alien angle: " << angle << std::endl;
+	m_velocity.x = m_speed * sin(angle * t_deltaTime.asMilliseconds() / 1000);
+	m_velocity.y = m_speed * -cos(angle * t_deltaTime.asMilliseconds() / 1000);
+
+	//grabbing the normalised velocity
+	float squareAns = sqrt((m_velocity.x * m_velocity.x) + (m_velocity.y * m_velocity.y));
+	sf::Vector2f normalisedVelocity = m_velocity / squareAns;
+	m_npcSprite.move(m_velocity);
+	m_npcSprite.setRotation(angle);
+
+	/*m_npcSprite.setRotation(angle);
+	m_npcSprite.move(m_velocity);*/
 }
+
+void NPC::randomWanderRadius()
+{
+	randomInt = rand() % (10 + 10 + 1) + -10; //random number between -1 to 1 ;
+	std::cout << "Alien rotate offset: " << randomInt << std::endl;
+}
+

@@ -15,12 +15,13 @@
 /// load and setup thne image
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{1920U, 1080U, 32U }, "SFML Game" },
-	m_exitGame{false} //when true game will exit
+	m_window{ sf::VideoMode{ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height, 32U }, "SFML Game" },
+	m_exitGame{false} //when true game will 
 {
+	srand(time(NULL));
 	//Initializing the sprites in the Game Constructor, when game gets created the images will be loaded for the Player and NPC
-	myPlayer.setupSprite();
 	myNPC.setupSprite();
+	m_window.setFramerateLimit(144);
 }
 
 /// <summary>
@@ -68,6 +69,7 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event newEvent;
+	
 	while (m_window.pollEvent(newEvent))
 	{
 		if ( sf::Event::Closed == newEvent.type) // window message
@@ -92,6 +94,21 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+
+	thePlayer.CheckForInput();
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1))
+	{
+		updateWander = false;
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2))
+	{
+		updateWander = true;
+	}
+	
+
+
+
 }
 
 /// <summary>
@@ -101,8 +118,14 @@ void Game::processKeys(sf::Event t_event)
 void Game::update(sf::Time t_deltaTime)
 {
 	//Calling the movement functions for the Player and NPC 
-	myPlayer.update();
-	myNPC.update();
+	thePlayer.update(t_deltaTime);
+
+	if (updateWander == true)
+	{
+		myNPC.update(t_deltaTime);
+	}
+
+	//mySeek.update(t_deltaTime, myPlayer);
 
 	if (m_exitGame)
 	{
@@ -116,8 +139,14 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(); //Clear the window
-	myPlayer.draw(m_window); //Drawing the player to the screen
-	myNPC.draw(m_window); //Drawing the NPC to the screen
+	thePlayer.draw(m_window); //Drawing the player to the screen
+
+	if (updateWander == true)
+	{
+		myNPC.draw(m_window); //Drawing the NPC to the screen
+	}
+
+	mySeek.draw(m_window);
 
 	m_window.display();
 }

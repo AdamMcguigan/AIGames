@@ -1,8 +1,29 @@
 ﻿  Game.cpp
-C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\Player.h(24,22): warning C4305: 'initializing': truncation from 'double' to 'float'
-  NPC.cpp
-C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\NPC.cpp(27,19): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\Player.h(27,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\NPC.h(29,106): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\NPC.h(29,63): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\Game.cpp(21,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Player.cpp
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\Player.h(27,31): warning C4305: 'initializing': truncation from 'double' to 'float'
   main.cpp
-C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Exercise 1\Player.h(24,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\Player.h(27,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\NPC.h(29,106): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Exercise 1\NPC.h(29,63): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
   Generating Code...
-  Exercise 1.vcxproj -> C:\Users\gameuser\Desktop\GameAI\AIGames\Exercise 1\Debug\Exercise 1.exe
+  Exercise 1.vcxproj -> C:\Users\adamm\Desktop\AI\AIGames\Exercise 1\Debug\Exercise 1.exe

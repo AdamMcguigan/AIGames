@@ -1,95 +1,115 @@
 #include "Player.h"
 
 
+Player::Player()
+{
+	setupSprite();
+}
+
 void Player::setupSprite()
 {
-	if (!m_playerTexture.loadFromFile("ASSETS\\IMAGES\\ship_0014.png"))
+	if (!m_playerTexture.loadFromFile("ASSETS\\IMAGES\\ship_00141.png"))
 	{
 		// simple error message if previous call fails
 		std::cout << "problem loading logo" << std::endl;
 	}
 	m_playerSprite.setScale(3, 3);
-	m_playerSprite.setRotation(90);
-	m_playerSprite.setOrigin(16, 16);
+	m_playerSprite.setOrigin(16,16);
 	m_playerSprite.setTexture(m_playerTexture);
+	m_playerSprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
 	m_playerSprite.setPosition(500.0f, 300.0f);
+
+	radius.setFillColor(sf::Color{ 107, 217, 231, 70 });
+	radius.setRadius(radiusF);
+	radius.setPosition(m_playerSprite.getPosition().x - radiusF, m_playerSprite.getPosition().y -radiusF);
 }
 
-void Player::movePlayer()
+////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+
+void Player::movePlayer(sf::Time& t_deltaTime)
 {
-	
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		speedValue += speedIncrease;
-	}
+	m_playerSprite.setRotation(m_rotation);
+	m_velocity.x = cos(m_calculateRadianAngle * (m_playerSprite.getRotation())) * m_speed;
+	m_velocity.y = sin(m_calculateRadianAngle * (m_playerSprite.getRotation())) * m_speed;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-	{
-		speedValue -= speedDecrease;
-	}
-
-	/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		m_playerSprite.move(-speedValue, 0);
-	}
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		m_playerSprite.move(speedValue, 0);
-	}*/
-
-	checkMaxSpeed();
-	checkRotation();
-
-	m_playerSprite.move(speedValue, 0);
+	m_playerSprite.setPosition(m_playerSprite.getPosition() + m_velocity);
+	radius.setPosition(m_playerSprite.getPosition().x - radiusF, m_playerSprite.getPosition().y - radiusF);
 }
 
-void Player::checkRotation()
-{
-	if (speedValue < 0)
-	{
-		m_playerSprite.setRotation(-90);
-	}
-	if (speedValue > 0)
-	{
-		m_playerSprite.setRotation(90);
-	}
-}
-
-void Player::checkMaxSpeed()
-{
-	//checking if speed is greater than maxSpeed
-	if (speedValue > m_maxSpeed)
-	{
-		speedValue = m_maxSpeed;
-	}
-
-	if (speedValue < -m_maxSpeed)
-	{
-		speedValue = -m_maxSpeed;
-	}
-}
+////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
 
 void Player::checkBoundaries()
 {
-	if (m_playerSprite.getPosition().x > 1920)
+	if (m_playerSprite.getPosition().x > sf::VideoMode::getDesktopMode().width + m_playerSprite.getGlobalBounds().width)
 	{
-		m_playerSprite.setPosition(20.0f, 300.0f);
+		m_playerSprite.setPosition(-m_playerSprite.getGlobalBounds().width, m_playerSprite.getPosition().y);
+	}
+	else if (m_playerSprite.getPosition().x < -m_playerSprite.getGlobalBounds().width)
+	{
+		m_playerSprite.setPosition(sf::VideoMode::getDesktopMode().width + m_playerSprite.getGlobalBounds().width, m_playerSprite.getPosition().y);
 	}
 
-	if (m_playerSprite.getPosition().x < 0)
+
+	if (m_playerSprite.getPosition().y > sf::VideoMode::getDesktopMode().height + m_playerSprite.getGlobalBounds().height)
 	{
-		m_playerSprite.setPosition(1920.0f, 300.0f);
+		m_playerSprite.setPosition(m_playerSprite.getPosition().x, -m_playerSprite.getGlobalBounds().height);
 	}
+	else if (m_playerSprite.getPosition().y < -m_playerSprite.getGlobalBounds().height)
+	{
+		m_playerSprite.setPosition(m_playerSprite.getPosition().x, sf::VideoMode::getDesktopMode().height + m_playerSprite.getGlobalBounds().height);
+	}
+
 }
 
-void Player::update()
+////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+
+void Player::CheckForInput()
 {
-	movePlayer();
-	checkBoundaries();
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	{
+		if (m_speed < MAX_SPEED)
+		{
+			m_speed += SPEED_INCREASE;
+		}
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	{
+		if (m_speed >= SPEED_INCREASE)
+		{
+			m_speed -= SPEED_INCREASE;
+		}
+	}
+
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	{
+		m_rotation -= ROTATION_SPEED;
+	}
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	{
+		m_rotation += ROTATION_SPEED;
+	}
+
 }
+
+////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
+
+void Player::update(sf::Time& t_deltaTime)
+{
+	checkBoundaries();
+	movePlayer(t_deltaTime);
+
+}
+
+////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
 
 void Player::draw(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_playerSprite);
+	m_window.draw(radius);
 }
+
+//sf::Vector2f Player::getPos()
+//{
+//	return m_playerSprite.getPosition();
+//}
