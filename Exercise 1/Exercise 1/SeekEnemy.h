@@ -1,7 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include <math.h>
-#include <cmath>
+#include "Player.h"
 
 class SeekEnemy
 {
@@ -10,8 +9,10 @@ public:
 
 	void checkBoundaries();
 	void draw(sf::RenderWindow& m_window);
-
+	void update(sf::Time& t_deltaTime, Player& t_player);
+	void seek(sf::Time& t_deltaTime, Player& t_player);
 	
+	sf::VertexArray LineToPlayer{ sf::Lines };
 private:
 	sf::Sprite m_seekSprite;
 	sf::Texture m_seekTexture;
@@ -24,12 +25,12 @@ private:
 
 	float angle = 0.0f;
 	float pi = 3.141592653589793238f;
-	float speed = 2.0f;
-	float maxSpeed = 4.0f;
-	float distance;
-	float timeToTarget = 0.25f;
-	float GetProperRot;
-	float rotation;
+	float speed = 1.0f;
+	float maxSpeed = 3.0f;
+	float distance = 0.0f;
+	float timeToTarget = 0.5f;
+	float GetProperRot = 0.0f;
+	float rotation = 0.0f;
 	sf::Vector2f distanceVec;
 	sf::Vector2f vel;
 

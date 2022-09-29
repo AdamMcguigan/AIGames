@@ -1,3 +1,4 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -12,13 +13,16 @@ public:
 	void CheckForInput();
 	void update(sf::Time& t_deltaTime);
 	void draw(sf::RenderWindow& m_window);
+	sf::Vector2f PlayerPos();
 
 	sf::CircleShape radius;
+	sf::CircleShape smallCircle;
 	float radiusF = 100.0f;
+	float smallRadius = 60;
 
-private:
-	sf::Texture m_playerTexture;
 	sf::Sprite m_playerSprite;
+	sf::Texture m_playerTexture;
+private:
 
 	const float MAX_SPEED = 15.0f;
 	const float SPEED_INCREASE = 0.5f;

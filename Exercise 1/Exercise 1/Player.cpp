@@ -22,6 +22,10 @@ void Player::setupSprite()
 	radius.setFillColor(sf::Color{ 107, 217, 231, 70 });
 	radius.setRadius(radiusF);
 	radius.setPosition(m_playerSprite.getPosition().x - radiusF, m_playerSprite.getPosition().y -radiusF);
+
+	smallCircle.setFillColor(sf::Color{ 121, 1, 231, 70 });
+	smallCircle.setRadius(smallRadius);
+	smallCircle.setPosition(m_playerSprite.getPosition().x - smallRadius, m_playerSprite.getPosition().y - smallRadius);
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -34,6 +38,7 @@ void Player::movePlayer(sf::Time& t_deltaTime)
 
 	m_playerSprite.setPosition(m_playerSprite.getPosition() + m_velocity);
 	radius.setPosition(m_playerSprite.getPosition().x - radiusF, m_playerSprite.getPosition().y - radiusF);
+	smallCircle.setPosition(m_playerSprite.getPosition().x - smallRadius, m_playerSprite.getPosition().y - smallRadius);
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -107,6 +112,12 @@ void Player::draw(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_playerSprite);
 	m_window.draw(radius);
+	m_window.draw(smallCircle);
+}
+
+sf::Vector2f Player::PlayerPos()
+{
+	return m_playerSprite.getPosition();
 }
 
 //sf::Vector2f Player::getPos()

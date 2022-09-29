@@ -125,7 +125,7 @@ void Game::update(sf::Time t_deltaTime)
 		myNPC.update(t_deltaTime);
 	}
 
-	//mySeek.update(t_deltaTime, myPlayer);
+	mySeek.update(t_deltaTime, thePlayer);
 
 	if (m_exitGame)
 	{
