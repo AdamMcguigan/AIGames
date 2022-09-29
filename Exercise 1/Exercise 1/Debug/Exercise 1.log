@@ -1,5 +1,5 @@
-﻿  SeekEnemy.cpp
+﻿  FleeEnemy.cpp
 C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Exercise 1\Player.h(31,31): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Exercise 1\SeekEnemy.cpp(20,111): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Exercise 1\SeekEnemy.cpp(20,65): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Exercise 1\FleeEnemy.cpp(19,112): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Exercise 1\FleeEnemy.cpp(19,65): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   Exercise 1.vcxproj -> C:\Users\adamm\OneDrive\Desktop\AI\AIGames\Exercise 1\Debug\Exercise 1.exe

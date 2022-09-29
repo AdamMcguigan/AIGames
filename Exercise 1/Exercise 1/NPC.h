@@ -13,12 +13,19 @@ public:
 	void wander(sf::Time& t_deltaTime);
 	void randomWanderRadius();
 
+	float radius = 100.0f;
+
+	sf::VertexArray WanderLine{ sf::Lines };
+	sf::Vector2f linePoint;
+
 private:
 	sf::Sprite m_npcSprite; 
 	sf::Texture m_npcTexture;
 	float angle = 0.0f;
 	float m_rotation = 0.0f;
 	float m_speed = 3.0f;
+	float angleInRads = 0;
+	float pi = 3.141592653589793238f;
 	int randomInt = 0;
 
 	sf::Text m_wanderText;

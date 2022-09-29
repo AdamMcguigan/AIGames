@@ -126,6 +126,7 @@ void Game::update(sf::Time t_deltaTime)
 	}
 
 	mySeek.update(t_deltaTime, thePlayer);
+	myFlee.update(t_deltaTime, thePlayer);
 
 	if (m_exitGame)
 	{
@@ -147,6 +148,7 @@ void Game::render()
 	}
 
 	mySeek.draw(m_window);
+	myFlee.draw(m_window);
 
 	m_window.display();
 }

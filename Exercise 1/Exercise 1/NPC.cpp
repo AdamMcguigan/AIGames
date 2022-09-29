@@ -2,16 +2,24 @@
 
 void NPC::update(sf::Time& t_deltaTime)
 {
-	//randomWanderRadius();
+	randomWanderRadius();
 	wander(t_deltaTime);
-	m_wanderText.setPosition(m_npcSprite.getPosition().x - 30,  m_npcSprite.getPosition().y);
 	checkBoundaries();
+
+	m_wanderText.setPosition(m_npcSprite.getPosition().x - 30, m_npcSprite.getPosition().y);
+
+	WanderLine.clear();
+	sf::Vertex begin{ m_npcSprite.getPosition(),sf::Color::Cyan };
+	WanderLine.append(begin);
+	sf::Vertex end{ linePoint, sf::Color::Yellow };
+	WanderLine.append(end);
 }
 
 void NPC::draw(sf::RenderWindow& m_window)
 {
 	m_window.draw(m_npcSprite);
 	m_window.draw(m_wanderText);
+	m_window.draw(WanderLine);
 }
 
 void NPC::setupSprite()
@@ -29,7 +37,7 @@ void NPC::setupSprite()
 	m_npcSprite.setTexture(m_npcTexture);
 	m_npcSprite.setRotation(m_rotation);
 	m_npcSprite.setScale(3, 3);
-	m_npcSprite.setOrigin(m_npcSprite.getGlobalBounds().width / 2, m_npcSprite.getGlobalBounds().height / 2);
+	m_npcSprite.setOrigin(16,16);
 	m_npcSprite.setPosition(m_pos);
 
 	m_wanderText.setFont(m_font);
@@ -67,8 +75,6 @@ void NPC::checkBoundaries()
 
 void NPC::wander(sf::Time& t_deltaTime)
 {
-	randomWanderRadius();
-
 	angle = m_npcSprite.getRotation();
 	angle = angle + randomInt;
 
@@ -81,23 +87,28 @@ void NPC::wander(sf::Time& t_deltaTime)
 		angle = 359.0;
 	}
 
-	std::cout << "Alien angle: " << angle << std::endl;
+
+	angleInRads = (angle - 90) * pi / 180;
+	linePoint.x = m_npcSprite.getPosition().x + radius * cos(angleInRads);
+	linePoint.y = m_npcSprite.getPosition().y + radius * sin(angleInRads);
+
+	std::cout << "Wandering angle: " << angle << std::endl;
+
 	m_velocity.x = m_speed * sin(angle * t_deltaTime.asMilliseconds() / 1000);
 	m_velocity.y = m_speed * -cos(angle * t_deltaTime.asMilliseconds() / 1000);
 
 	//grabbing the normalised velocity
 	float squareAns = sqrt((m_velocity.x * m_velocity.x) + (m_velocity.y * m_velocity.y));
 	sf::Vector2f normalisedVelocity = m_velocity / squareAns;
-	m_npcSprite.move(m_velocity);
-	m_npcSprite.setRotation(angle);
 
-	/*m_npcSprite.setRotation(angle);
-	m_npcSprite.move(m_velocity);*/
+	m_npcSprite.setRotation(angle);
+	m_npcSprite.move(m_velocity);
+
 }
 
 void NPC::randomWanderRadius()
 {
-	randomInt = rand() % (10 + 10 + 1) + -10; //random number between -1 to 1 ;
+	randomInt = rand() % (3 + 3 + 1) + -3; //random number between -1 to 1 ;
 	std::cout << "Alien rotate offset: " << randomInt << std::endl;
 }
 

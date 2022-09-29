@@ -92,6 +92,7 @@ void SeekEnemy::seek(sf::Time& t_deltaTime, Player& t_player)
 			vel = normalisedVelocity;
 			vel = vel * maxSpeed * 2.0f;
 		}
+
 		if (distance < t_player.smallRadius)
 		{
 			std::cout << "Touching small radius	" << std::endl;

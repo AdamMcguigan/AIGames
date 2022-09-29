@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "NPC.h"
 #include "SeekEnemy.h"
+#include "FleeEnemy.h"
 
 class Game
 {
@@ -27,6 +28,7 @@ public:
 	Player thePlayer;
 	NPC myNPC;
 	SeekEnemy mySeek;
+	FleeEnemy myFlee;
 
 private:
 	bool updateWander = true;
