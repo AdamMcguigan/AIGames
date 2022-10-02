@@ -8,8 +8,6 @@
 #include "Game.h"
 #include <iostream>
 
-
-
 /// <summary>
 /// default constructor
 /// setup the window properties
@@ -17,11 +15,13 @@
 /// load and setup thne image
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ 800U, 600U, 32U }, "SFML Game" },
-	m_exitGame{false} //when true game will exit
+	m_window{ sf::VideoMode{ sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height, 32U }, "SFML Game" },
+	m_exitGame{ false } //when true game will 
 {
-	setupFontAndText(); // load font 
-	setupSprite(); // load texture
+	srand(time(NULL));
+	//Initializing the sprites in the Game Constructor, when game gets created the images will be loaded for the Player and NPC
+	//myNPC.setupSprite();
+	m_window.setFramerateLimit(144);
 }
 
 /// <summary>
@@ -41,7 +41,7 @@ Game::~Game()
 /// if updates run slow then don't render frames
 /// </summary>
 void Game::run()
-{	
+{
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	const float fps{ 60.0f };
@@ -59,6 +59,8 @@ void Game::run()
 		render(); // as many as possible
 	}
 }
+
+
 /// <summary>
 /// handle user and system events/ input
 /// get key presses/ mouse moves etc. from OS
@@ -67,9 +69,10 @@ void Game::run()
 void Game::processEvents()
 {
 	sf::Event newEvent;
+
 	while (m_window.pollEvent(newEvent))
 	{
-		if ( sf::Event::Closed == newEvent.type) // window message
+		if (sf::Event::Closed == newEvent.type) // window message
 		{
 			m_exitGame = true;
 		}
@@ -91,6 +94,24 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+
+	thePlayer.CheckForInput();
+
+	//Below is the key checks for enabling / disabling Npc's or player
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+	{
+		thePlayer.drawDebugLines ^= true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+	{
+		myFlee.drawCharacter ^= true;
+	}
+	
+
+
+
+
 }
 
 /// <summary>
@@ -99,6 +120,12 @@ void Game::processKeys(sf::Event t_event)
 /// <param name="t_deltaTime">time interval per frame</param>
 void Game::update(sf::Time t_deltaTime)
 {
+	//Calling the movement functions for the Player and NPC 
+	thePlayer.update(t_deltaTime);
+
+	//mySeek.update(t_deltaTime, thePlayer);
+	myFlee.update(t_deltaTime, thePlayer);
+
 	if (m_exitGame)
 	{
 		m_window.close();
@@ -110,9 +137,12 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color::White);
-	m_window.draw(m_welcomeMessage);
-	m_window.draw(m_logoSprite);
+	m_window.clear(); //Clear the window
+	thePlayer.draw(m_window); //Drawing the player to the screen
+
+	//mySeek.draw(m_window);
+	myFlee.draw(m_window);
+
 	m_window.display();
 }
 
@@ -136,16 +166,4 @@ void Game::setupFontAndText()
 
 }
 
-/// <summary>
-/// load the texture and setup the sprite for the logo
-/// </summary>
-void Game::setupSprite()
-{
-	if (!m_logoTexture.loadFromFile("ASSETS\\IMAGES\\SFML-LOGO.png"))
-	{
-		// simple error message if previous call fails
-		std::cout << "problem loading logo" << std::endl;
-	}
-	m_logoSprite.setTexture(m_logoTexture);
-	m_logoSprite.setPosition(300.0f, 180.0f);
-}
+

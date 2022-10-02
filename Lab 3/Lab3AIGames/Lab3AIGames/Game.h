@@ -1,5 +1,4 @@
 /// <summary>
-/// author Pete Lowe May 2019
 /// you need to change the above line or lose marks
 /// </summary>
 #ifndef GAME_HPP
@@ -10,6 +9,9 @@
 /// Don't forget the endif at the bottom
 /// </summary>
 #include <SFML/Graphics.hpp>
+#include "Player.h"
+//#include "SeekEnemy.h"
+#include "FleeEnemy.h"
 
 class Game
 {
@@ -21,15 +23,19 @@ public:
 	/// </summary>
 	void run();
 
-private:
+	//Creating instances of the Player and NPC
+	Player thePlayer;
+	//SeekEnemy mySeek;
+	FleeEnemy myFlee;
 
+private:
+	bool updateWander = true;
 	void processEvents();
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
-	
+
 	void setupFontAndText();
-	void setupSprite();
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
