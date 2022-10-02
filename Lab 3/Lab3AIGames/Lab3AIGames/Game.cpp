@@ -100,16 +100,41 @@ void Game::processKeys(sf::Event t_event)
 	//Below is the key checks for enabling / disabling Npc's or player
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
 	{
-		thePlayer.drawDebugLines ^= true;
+		myFlee.drawCharacter ^= true;
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
 	{
-		myFlee.drawCharacter ^= true;
+		myWander.canUpdate ^= true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+	{
+		mySeek.canUpdate ^= true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+	{
+		myFastArrive.canUpdate ^= true;
+	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num5))
+	{
+		mySlowArrive.canUpdate ^= true;
 	}
 	
 
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+	{
+		thePlayer.drawDebugLines ^= true;
+		myWander.drawTracer ^= true;
+		mySeek.drawTracer ^= true;
+		myFlee.tracerAlive ^= true;
+		myFastArrive.drawTracer ^= true;
+		mySlowArrive.drawTracer ^= true;
+		//myPursue.tracerAlive ^= true;
 
+	}
 
 
 }
@@ -122,9 +147,11 @@ void Game::update(sf::Time t_deltaTime)
 {
 	//Calling the movement functions for the Player and NPC 
 	thePlayer.update(t_deltaTime);
-
-	//mySeek.update(t_deltaTime, thePlayer);
+	myWander.update(t_deltaTime);
+	mySeek.update(t_deltaTime, thePlayer);
 	myFlee.update(t_deltaTime, thePlayer);
+	myFastArrive.update(t_deltaTime, thePlayer);
+	mySlowArrive.update(t_deltaTime, thePlayer);
 
 	if (m_exitGame)
 	{
@@ -137,11 +164,14 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(); //Clear the window
-	thePlayer.draw(m_window); //Drawing the player to the screen
+	m_window.clear(); 
 
-	//mySeek.draw(m_window);
+	thePlayer.draw(m_window); 
+	myWander.draw(m_window);
+	mySeek.draw(m_window);
 	myFlee.draw(m_window);
+	myFastArrive.draw(m_window);
+	mySlowArrive.draw(m_window);
 
 	m_window.display();
 }
@@ -151,18 +181,7 @@ void Game::render()
 /// </summary>
 void Game::setupFontAndText()
 {
-	if (!m_ArialBlackfont.loadFromFile("ASSETS\\FONTS\\ariblk.ttf"))
-	{
-		std::cout << "problem loading arial black font" << std::endl;
-	}
-	m_welcomeMessage.setFont(m_ArialBlackfont);
-	m_welcomeMessage.setString("SFML Game");
-	m_welcomeMessage.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
-	m_welcomeMessage.setPosition(40.0f, 40.0f);
-	m_welcomeMessage.setCharacterSize(80U);
-	m_welcomeMessage.setOutlineColor(sf::Color::Red);
-	m_welcomeMessage.setFillColor(sf::Color::Black);
-	m_welcomeMessage.setOutlineThickness(3.0f);
+	
 
 }
 

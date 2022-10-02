@@ -63,20 +63,26 @@ void FleeEnemy::draw(sf::RenderWindow& m_window)
 {
 	if (drawCharacter == true)
 	{
-		m_window.draw(m_fleeSprite);
-		m_window.draw(radius);
-		m_window.draw(m_fleeText);
-		m_window.draw(LineToPlayer);
+		if (tracerAlive == true)
+		{
+			m_window.draw(radius);
+			m_window.draw(LineToPlayer);
+		}
 
+		m_window.draw(m_fleeSprite);
+		m_window.draw(m_fleeText);
 	}
 }
 
 void FleeEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 {
-	kinematicFlee(t_deltaTime, t_player);
-	checkBoundaries();
-	radius.setPosition(m_fleeSprite.getPosition().x - radiusF, m_fleeSprite.getPosition().y - radiusF);
-	m_fleeText.setPosition(m_fleeSprite.getPosition().x - 30, m_fleeSprite.getPosition().y);
+	if (drawCharacter == true)
+	{
+		kinematicFlee(t_deltaTime, t_player);
+		checkBoundaries();
+		radius.setPosition(m_fleeSprite.getPosition().x - radiusF, m_fleeSprite.getPosition().y - radiusF);
+		m_fleeText.setPosition(m_fleeSprite.getPosition().x - 30, m_fleeSprite.getPosition().y);
+	}
 }
 
 void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player)

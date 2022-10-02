@@ -10,8 +10,11 @@
 /// </summary>
 #include <SFML/Graphics.hpp>
 #include "Player.h"
-//#include "SeekEnemy.h"
+#include "SeekEnemy.h"
 #include "FleeEnemy.h"
+#include "Wander.h"
+#include "FastArrive.h"
+#include "SlowArrive.h"
 
 class Game
 {
@@ -25,11 +28,13 @@ public:
 
 	//Creating instances of the Player and NPC
 	Player thePlayer;
-	//SeekEnemy mySeek;
+	SeekEnemy mySeek;
 	FleeEnemy myFlee;
+	Wander myWander;
+	FastArrive myFastArrive;
+	SlowArrive mySlowArrive;
 
 private:
-	bool updateWander = true;
 	void processEvents();
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
