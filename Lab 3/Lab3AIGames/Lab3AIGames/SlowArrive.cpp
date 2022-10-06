@@ -28,7 +28,6 @@ void SlowArrive::draw(sf::RenderWindow& t_window)
 }
 
 
-
 void SlowArrive::setupSprites()
 {
 	if (!m_arrvieTexture.loadFromFile("ASSETS\\IMAGES\\ArriveFast.png"))

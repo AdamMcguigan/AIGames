@@ -19,6 +19,13 @@ public:
 	bool canUpdate = false;
 	bool drawTracer = false;
 
+	sf::RectangleShape m_leftLine;
+	sf::RectangleShape m_rightLine;
+	float angleOfSight = 35;
+	float m_calculateRadianAngle = 3.1415926536 / 180;
+	void setVisionCone(sf::Vector2f t_targetPos);
+	sf::Vector2f normalize(sf::Vector2f normVector);
+
 private:
 	sf::Sprite m_pursueSprite;
 	sf::Texture m_pursueTexture;

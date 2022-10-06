@@ -1,5 +1,40 @@
-﻿  PursueEnemy.cpp
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Player.h(39,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+﻿  Game.cpp
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Player.h(41,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\SeekEnemy.h(24,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\FleeEnemy.h(30,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Wander.h(40,106): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Wander.h(40,63): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\FastArrive.h(25,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\PursueEnemy.h(25,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Game.cpp(21,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  PursueEnemy.cpp
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Player.h(41,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\PursueEnemy.h(25,31): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\PursueEnemy.cpp(20,112): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
 C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\PursueEnemy.cpp(20,67): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+  main.cpp
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Player.h(41,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\SeekEnemy.h(24,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\FleeEnemy.h(30,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Wander.h(40,106): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\Wander.h(40,63): warning C4244: 'argument': conversion from 'unsigned int' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\FastArrive.h(25,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\PursueEnemy.h(25,31): warning C4305: 'initializing': truncation from 'double' to 'float'
+  Generating Code...
   Lab3AIGames.vcxproj -> C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Debug\Lab3AIGames.exe

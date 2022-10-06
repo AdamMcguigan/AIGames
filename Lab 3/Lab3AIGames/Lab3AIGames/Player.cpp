@@ -119,6 +119,7 @@ void Player::update(sf::Time& t_deltaTime)
 	playerLine.append(begin);
 	sf::Vertex end{ pursuePoint, sf::Color::Green };
 	playerLine.append(end);
+
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 

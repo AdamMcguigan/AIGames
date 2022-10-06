@@ -19,6 +19,13 @@ public:
 	sf::Texture m_arrvieTexture; // texture used for alien
 	sf::Sprite m_arrvieSprite; // sprite used for alien
 	sf::VertexArray LineToPlayer{ sf::Lines };
+	
+	sf::RectangleShape m_leftLine;
+	sf::RectangleShape m_rightLine;
+	float angleOfSight = 35;
+	float m_calculateRadianAngle = 3.1415926536 / 180;
+	void setVisionCone(sf::Vector2f t_targetPos);
+	sf::Vector2f normalize(sf::Vector2f normVector);
 
 private:
 	void setupSprites();

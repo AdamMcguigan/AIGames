@@ -28,6 +28,14 @@ SeekEnemy::SeekEnemy()
 	seekText.setOutlineColor(sf::Color::Black);
 	seekText.setFillColor(sf::Color::White);
 	seekText.setOutlineThickness(3.0f);
+
+	m_leftLine.setSize({ 200,1 });
+	m_leftLine.setFillColor(sf::Color::Green);
+	m_leftLine.setRotation(m_seekSprite.getRotation() - 90 - angleOfSight);
+
+	m_rightLine.setSize({ 200,1 });
+	m_rightLine.setFillColor(sf::Color::Green);
+	m_rightLine.setRotation(m_seekSprite.getRotation() - 90 - angleOfSight);
 }
 
 void SeekEnemy::checkBoundaries()
@@ -63,6 +71,8 @@ void SeekEnemy::draw(sf::RenderWindow& m_window)
 		}
 		m_window.draw(m_seekSprite);
 		m_window.draw(seekText);
+		m_window.draw(m_leftLine);
+		m_window.draw(m_rightLine);
 	}
 }
 
@@ -71,8 +81,10 @@ void SeekEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 	if (canUpdate == true)
 	{
 		seek(t_deltaTime, t_player);
-		//kinematicSeek(t_deltaTime, t_player);
 		seekText.setPosition(m_seekSprite.getPosition().x - 30, m_seekSprite.getPosition().y);
+		setVisionCone(t_player.m_playerSprite.getPosition());
+		//kinematicSeek(t_deltaTime, t_player);
+
 	}
 }
 
@@ -104,6 +116,51 @@ void SeekEnemy::seek(sf::Time& t_deltaTime, Player& t_player)
 	LineToPlayer.append(end);
 
 }
+
+void SeekEnemy::setVisionCone(sf::Vector2f t_targetPos)
+{
+	m_leftLine.setRotation(m_seekSprite.getRotation() - 90 - angleOfSight);
+	m_leftLine.setPosition(m_seekSprite.getPosition());
+
+	m_rightLine.setRotation(m_seekSprite.getRotation() - 90 + angleOfSight);
+	m_rightLine.setPosition(m_seekSprite.getPosition());
+
+	sf::Vector2f orientation = { std::cos(m_calculateRadianAngle * m_seekSprite.getRotation() - 90),std::sin(m_calculateRadianAngle * m_seekSprite.getRotation() - 90) };
+	sf::Vector2f distance = t_targetPos - m_seekSprite.getPosition();
+	distance = normalize(distance);
+
+	float dotProduct = (orientation.x * distance.x) + (orientation.y * distance.y);
+
+
+	if (dotProduct > std::cos(angleOfSight * 2))
+	{
+		if (sqrt((t_targetPos.x - m_seekSprite.getPosition().x) * (t_targetPos.x - m_seekSprite.getPosition().x) + (t_targetPos.y - m_seekSprite.getPosition().y) * (t_targetPos.y - m_seekSprite.getPosition().y)) <= 200.0f)
+		{
+			m_leftLine.setFillColor(sf::Color::Red);
+			m_rightLine.setFillColor(sf::Color::Red);
+		}
+
+		else
+		{
+			m_leftLine.setFillColor(sf::Color::Green);
+			m_rightLine.setFillColor(sf::Color::Green);
+		}
+	}
+	else
+	{
+		m_leftLine.setFillColor(sf::Color::Green);
+		m_rightLine.setFillColor(sf::Color::Green);
+	}
+}
+
+sf::Vector2f SeekEnemy::normalize(sf::Vector2f normVector)
+{
+	float length = sqrt((normVector.x * normVector.x) + (normVector.y * normVector.y));
+	return { normVector.x / length, normVector.y / length };
+}
+
+
+
 
 //float SeekEnemy::getNewOrientation(float m_orientation, sf::Vector2f m_velocity)
 //{

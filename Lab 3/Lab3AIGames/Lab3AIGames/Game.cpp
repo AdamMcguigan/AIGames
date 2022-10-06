@@ -20,7 +20,7 @@ Game::Game() :
 {
 	srand(time(NULL));
 	//Initializing the sprites in the Game Constructor, when game gets created the images will be loaded for the Player and NPC
-	//myNPC.setupSprite();
+	setupFontAndText();
 	m_window.setFramerateLimit(144);
 }
 
@@ -129,7 +129,7 @@ void Game::processKeys(sf::Event t_event)
 	}
 	
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num7))
 	{
 		thePlayer.drawDebugLines ^= true;
 		myWander.drawTracer ^= true;
@@ -179,6 +179,7 @@ void Game::render()
 	myFastArrive.draw(m_window);
 	mySlowArrive.draw(m_window);
 	myPursue.draw(m_window);
+	m_window.draw(gameText);
 
 	m_window.display();
 }
@@ -188,7 +189,19 @@ void Game::render()
 /// </summary>
 void Game::setupFontAndText()
 {
-	
+	if (!m_ArialBlackfont.loadFromFile("ASSETS\\FONTS\\ariblk.ttf"))
+	{
+		std::cout << "problem loading arial black font" << std::endl;
+	}
+
+	gameText.setFont(m_ArialBlackfont);
+	gameText.setString("Press 1.Flee  2.Wander  3.Seek  4.Fast Arrive  5.Slow Arrive  6.Purse  7.Draw Debug Lines");
+	gameText.setStyle(sf::Text::Underlined | sf::Text::Italic | sf::Text::Bold);
+	gameText.setPosition(10.0f,10.0f);
+	gameText.setCharacterSize(25U);
+	gameText.setOutlineColor(sf::Color::Black);
+	gameText.setFillColor(sf::Color::White);
+	gameText.setOutlineThickness(3.0f);
 
 }
 

@@ -36,6 +36,8 @@ public:
 	SlowArrive mySlowArrive;
 	PursueEnemy myPursue;
 
+	sf::Text gameText;
+
 private:
 	void processEvents();
 	void processKeys(sf::Event t_event);

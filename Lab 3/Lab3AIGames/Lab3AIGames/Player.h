@@ -22,6 +22,7 @@ public:
 	sf::VertexArray playerLine{ sf::Lines };
 	sf::Vector2f pursuePoint;
 
+
 	float radiusF = 100.0f;
 	float smallRadius = 60;
 	float pursueCircleRadius = 50.0f;
@@ -30,6 +31,7 @@ public:
 	sf::Texture m_playerTexture;
 
 	bool drawDebugLines = false;
+
 private:
 
 	const float MAX_SPEED = 15.0f;

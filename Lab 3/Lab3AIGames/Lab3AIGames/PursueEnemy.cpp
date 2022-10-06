@@ -28,6 +28,14 @@ PursueEnemy::PursueEnemy()
 	m_pursueText.setOutlineColor(sf::Color::Black);
 	m_pursueText.setFillColor(sf::Color::White);
 	m_pursueText.setOutlineThickness(3.0f);
+
+	m_leftLine.setSize({ 200,1 });
+	m_leftLine.setFillColor(sf::Color::Green);
+	m_leftLine.setRotation(m_pursueSprite.getRotation() - 90 - angleOfSight);
+
+	m_rightLine.setSize({ 200,1 });
+	m_rightLine.setFillColor(sf::Color::Green);
+	m_rightLine.setRotation(m_pursueSprite.getRotation() - 90 - angleOfSight);
 }
 
 void PursueEnemy::checkBoundaries()
@@ -62,6 +70,8 @@ void PursueEnemy::draw(sf::RenderWindow& m_window)
 		}
 		m_window.draw(m_pursueSprite);
 		m_window.draw(m_pursueText);
+		m_window.draw(m_leftLine);
+		m_window.draw(m_rightLine);
 	}
 
 }
@@ -72,7 +82,7 @@ void PursueEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 	{
 		pursue(t_deltaTime, t_player);
 		m_pursueText.setPosition(m_pursueSprite.getPosition().x - 30, m_pursueSprite.getPosition().y);
-		
+		setVisionCone(t_player.m_playerSprite.getPosition());
 	}
 }
 
@@ -102,4 +112,46 @@ void PursueEnemy::pursue(sf::Time& t_deltaTime, Player& t_player)
 	LineToPlayer.append(begin);
 	sf::Vertex end{ pursuePointPos, sf::Color::Red };
 	LineToPlayer.append(end);
+}
+
+void PursueEnemy::setVisionCone(sf::Vector2f t_targetPos)
+{
+	m_leftLine.setRotation(m_pursueSprite.getRotation() - 90 - angleOfSight);
+	m_leftLine.setPosition(m_pursueSprite.getPosition());
+
+	m_rightLine.setRotation(m_pursueSprite.getRotation() - 90 + angleOfSight);
+	m_rightLine.setPosition(m_pursueSprite.getPosition());
+
+	sf::Vector2f orientation = { std::cos(m_calculateRadianAngle * m_pursueSprite.getRotation() - 90),std::sin(m_calculateRadianAngle * m_pursueSprite.getRotation() - 90) };
+	sf::Vector2f distance = t_targetPos - m_pursueSprite.getPosition();
+	distance = normalize(distance);
+
+	float dotProduct = (orientation.x * distance.x) + (orientation.y * distance.y);
+
+
+	if (dotProduct > std::cos(angleOfSight * 2))
+	{
+		if (sqrt((t_targetPos.x - m_pursueSprite.getPosition().x) * (t_targetPos.x - m_pursueSprite.getPosition().x) + (t_targetPos.y - m_pursueSprite.getPosition().y) * (t_targetPos.y - m_pursueSprite.getPosition().y)) <= 200.0f)
+		{
+			m_leftLine.setFillColor(sf::Color::Red);
+			m_rightLine.setFillColor(sf::Color::Red);
+		}
+
+		else
+		{
+			m_leftLine.setFillColor(sf::Color::Green);
+			m_rightLine.setFillColor(sf::Color::Green);
+		}
+	}
+	else
+	{
+		m_leftLine.setFillColor(sf::Color::Green);
+		m_rightLine.setFillColor(sf::Color::Green);
+	}
+}
+
+sf::Vector2f PursueEnemy::normalize(sf::Vector2f normVector)
+{
+	float length = sqrt((normVector.x * normVector.x) + (normVector.y * normVector.y));
+	return { normVector.x / length, normVector.y / length };
 }

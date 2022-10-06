@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Player.h"
@@ -16,6 +17,13 @@ public:
 
 	bool canUpdate = false;
 	bool drawTracer = false;
+
+	sf::RectangleShape m_leftLine;
+	sf::RectangleShape m_rightLine;
+	float angleOfSight = 35;
+	float m_calculateRadianAngle = 3.1415926536 / 180;
+	void setVisionCone(sf::Vector2f t_targetPos);
+	sf::Vector2f normalize(sf::Vector2f normVector);
 
 	//float orientation = 0.0f;
 	//float getNewOrientation(float m_orientation, sf::Vector2f m_velocity);

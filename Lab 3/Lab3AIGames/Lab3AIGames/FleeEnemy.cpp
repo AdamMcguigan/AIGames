@@ -35,6 +35,14 @@ FleeEnemy::FleeEnemy()
 	radius.setPosition(m_fleeSprite.getPosition().x - radiusF, m_fleeSprite.getPosition().y - radiusF);
 
 	LineToPlayer.clear();
+
+	m_leftLine.setSize({ 200,1 });
+	m_leftLine.setFillColor(sf::Color::Green);
+	m_leftLine.setRotation(m_fleeSprite.getRotation() - 90 - angleOfSight);
+
+	m_rightLine.setSize({ 200,1 });
+	m_rightLine.setFillColor(sf::Color::Green);
+	m_rightLine.setRotation(m_fleeSprite.getRotation() - 90 - angleOfSight);
 }
 
 void FleeEnemy::checkBoundaries()
@@ -71,6 +79,8 @@ void FleeEnemy::draw(sf::RenderWindow& m_window)
 
 		m_window.draw(m_fleeSprite);
 		m_window.draw(m_fleeText);
+		m_window.draw(m_leftLine);
+		m_window.draw(m_rightLine);
 	}
 }
 
@@ -82,6 +92,7 @@ void FleeEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 		checkBoundaries();
 		radius.setPosition(m_fleeSprite.getPosition().x - radiusF, m_fleeSprite.getPosition().y - radiusF);
 		m_fleeText.setPosition(m_fleeSprite.getPosition().x - 30, m_fleeSprite.getPosition().y);
+		setVisionCone(t_player.m_playerSprite.getPosition());
 	}
 }
 
@@ -128,4 +139,46 @@ void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player)
 	LineToPlayer.append(begin);
 	sf::Vertex end{ playerPos, sf::Color::Yellow };
 	LineToPlayer.append(end);
+}
+
+void FleeEnemy::setVisionCone(sf::Vector2f t_targetPos)
+{
+	m_leftLine.setRotation(m_fleeSprite.getRotation() - 90 - angleOfSight);
+	m_leftLine.setPosition(m_fleeSprite.getPosition());
+
+	m_rightLine.setRotation(m_fleeSprite.getRotation() - 90 + angleOfSight);
+	m_rightLine.setPosition(m_fleeSprite.getPosition());
+
+	sf::Vector2f orientation = { std::cos(m_calculateRadianAngle * m_fleeSprite.getRotation() - 90),std::sin(m_calculateRadianAngle * m_fleeSprite.getRotation() - 90) };
+	sf::Vector2f distance = t_targetPos - m_fleeSprite.getPosition();
+	distance = normalize(distance);
+
+	float dotProduct = (orientation.x * distance.x) + (orientation.y * distance.y);
+
+
+	if (dotProduct > std::cos(angleOfSight * 2))
+	{
+		if (sqrt((t_targetPos.x - m_fleeSprite.getPosition().x) * (t_targetPos.x - m_fleeSprite.getPosition().x) + (t_targetPos.y - m_fleeSprite.getPosition().y) * (t_targetPos.y - m_fleeSprite.getPosition().y)) <= 200.0f)
+		{
+			m_leftLine.setFillColor(sf::Color::Red);
+			m_rightLine.setFillColor(sf::Color::Red);
+		}
+
+		else
+		{
+			m_leftLine.setFillColor(sf::Color::Green);
+			m_rightLine.setFillColor(sf::Color::Green);
+		}
+	}
+	else
+	{
+		m_leftLine.setFillColor(sf::Color::Green);
+		m_rightLine.setFillColor(sf::Color::Green);
+	}
+}
+
+sf::Vector2f FleeEnemy::normalize(sf::Vector2f normVector)
+{
+	float length = sqrt((normVector.x * normVector.x) + (normVector.y * normVector.y));
+	return { normVector.x / length, normVector.y / length };
 }
