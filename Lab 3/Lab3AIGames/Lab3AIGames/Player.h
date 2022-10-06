@@ -17,8 +17,14 @@ public:
 
 	sf::CircleShape radius;
 	sf::CircleShape smallCircle;
+	sf::CircleShape pursueCircle;
+
+	sf::VertexArray playerLine{ sf::Lines };
+	sf::Vector2f pursuePoint;
+
 	float radiusF = 100.0f;
 	float smallRadius = 60;
+	float pursueCircleRadius = 50.0f;
 
 	sf::Sprite m_playerSprite;
 	sf::Texture m_playerTexture;

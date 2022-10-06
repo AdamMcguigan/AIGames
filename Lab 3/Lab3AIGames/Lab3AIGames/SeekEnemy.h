@@ -17,6 +17,10 @@ public:
 	bool canUpdate = false;
 	bool drawTracer = false;
 
+	//float orientation = 0.0f;
+	//float getNewOrientation(float m_orientation, sf::Vector2f m_velocity);
+	//void kinematicSeek(sf::Time& t_deltaTime, Player t_player);
+
 private:
 	sf::Sprite m_seekSprite;
 	sf::Texture m_seekTexture;

@@ -71,6 +71,7 @@ void SeekEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 	if (canUpdate == true)
 	{
 		seek(t_deltaTime, t_player);
+		//kinematicSeek(t_deltaTime, t_player);
 		seekText.setPosition(m_seekSprite.getPosition().x - 30, m_seekSprite.getPosition().y);
 	}
 }
@@ -84,30 +85,6 @@ void SeekEnemy::seek(sf::Time& t_deltaTime, Player& t_player)
 	distance = sqrtf(vel.x * vel.x + vel.y * vel.y);
 	distanceVec = sf::Vector2f{ vel.x / distance , vel.y / distance };
 	vel = distanceVec * maxSpeed;
-
-	if (distance > t_player.radiusF)
-	{
-		std::cout << "SEEKING PLAYER " << std::endl;
-	}
-	else 
-	{
-		vel = vel / timeToTarget;
-
-		if (distance > maxSpeed)
-		{
-
-			std::cout << "In large radius " << std::endl;
-			sf::Vector2f normalisedVelocity = { vel.x / distance ,vel.y / distance };
-			vel = normalisedVelocity;
-			vel = vel * maxSpeed * 2.0f;
-		}
-
-		if (distance < t_player.smallRadius)
-		{
-			std::cout << "Touching small radius	" << std::endl;
-			vel = { 0.0f,0.0f };
-		}
-	}
 
 	float dx = currentPosition.x - t_player.m_playerSprite.getPosition().x;
 	float dy = currentPosition.y - t_player.m_playerSprite.getPosition().y;
@@ -127,6 +104,34 @@ void SeekEnemy::seek(sf::Time& t_deltaTime, Player& t_player)
 	LineToPlayer.append(end);
 
 }
+
+//float SeekEnemy::getNewOrientation(float m_orientation, sf::Vector2f m_velocity)
+//{
+//	float velocityLength = sqrt(m_velocity.x * m_velocity.x + m_velocity.y * m_velocity.y);
+//
+//	if (velocityLength > 0)
+//	{
+//		return atan2(m_seekSprite.getPosition().x, m_seekSprite.getPosition().y);
+//	}
+//
+//	return orientation;
+//}
+
+//void SeekEnemy::kinematicSeek(sf::Time& t_deltaTime, Player t_player)
+//{
+//	sf::Vector2f playerPosition = t_player.m_playerSprite.getPosition();
+//	sf::Vector2f position = m_seekSprite.getPosition();
+//
+//	velocity = playerPosition - position;
+//
+//	float squareAns = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y));
+//	sf::Vector2f normalisedVelocity = velocity / squareAns;
+//	normalisedVelocity *= maxSpeed;
+//	orientation = getNewOrientation(orientation, normalisedVelocity);
+//
+//	m_seekSprite.move(normalisedVelocity);
+//	m_seekSprite.setRotation(orientation);
+//}
 
 
 

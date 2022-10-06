@@ -15,6 +15,7 @@
 #include "Wander.h"
 #include "FastArrive.h"
 #include "SlowArrive.h"
+#include "PursueEnemy.h"
 
 class Game
 {
@@ -33,6 +34,7 @@ public:
 	Wander myWander;
 	FastArrive myFastArrive;
 	SlowArrive mySlowArrive;
+	PursueEnemy myPursue;
 
 private:
 	void processEvents();

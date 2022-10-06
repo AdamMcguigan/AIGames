@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\adamm\Desktop\AI\AIGames\Lab 3\Lab3AIGames\Debug\Lab3AIGames.exe</FullPath>
+      <FullPath>C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Debug\Lab3AIGames.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\adamm\Desktop\AI\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\ASSETS\FONTS\ariblk.ttf</FullPath>
+      <FullPath>C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\ASSETS\FONTS\ariblk.ttf</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\adamm\Desktop\AI\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
+      <FullPath>C:\Users\adamm\Desktop\AI Final\AIGames\Lab 3\Lab3AIGames\Lab3AIGames\ASSETS\IMAGES\SFML-LOGO.png</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

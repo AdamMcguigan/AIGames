@@ -24,6 +24,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PursueEnemy.cpp" />
     <ClCompile Include="SeekEnemy.cpp" />
     <ClCompile Include="SlowArrive.cpp" />
     <ClCompile Include="Wander.cpp" />
@@ -33,6 +34,7 @@
     <ClInclude Include="FleeEnemy.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PursueEnemy.h" />
     <ClInclude Include="SeekEnemy.h" />
     <ClInclude Include="SlowArrive.h" />
     <ClInclude Include="Wander.h" />

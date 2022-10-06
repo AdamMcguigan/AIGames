@@ -26,6 +26,9 @@ void Player::setupSprite()
 	smallCircle.setFillColor(sf::Color{ 121, 1, 231, 70 });
 	smallCircle.setRadius(smallRadius);
 	smallCircle.setPosition(m_playerSprite.getPosition().x - smallRadius, m_playerSprite.getPosition().y - smallRadius);
+
+	pursueCircle.setFillColor(sf::Color{ 197, 85, 226, 80 });
+	pursueCircle.setRadius(pursueCircleRadius);
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -36,9 +39,15 @@ void Player::movePlayer(sf::Time& t_deltaTime)
 	m_velocity.x = cos(m_calculateRadianAngle * (m_playerSprite.getRotation())) * m_speed;
 	m_velocity.y = sin(m_calculateRadianAngle * (m_playerSprite.getRotation())) * m_speed;
 
+	pursuePoint.x = m_playerSprite.getPosition().x + radiusF * m_velocity.x;
+	pursuePoint.y = m_playerSprite.getPosition().y + radiusF * m_velocity.y;
+
 	m_playerSprite.setPosition(m_playerSprite.getPosition() + m_velocity);
 	radius.setPosition(m_playerSprite.getPosition().x - radiusF, m_playerSprite.getPosition().y - radiusF);
 	smallCircle.setPosition(m_playerSprite.getPosition().x - smallRadius, m_playerSprite.getPosition().y - smallRadius);
+
+	pursueCircle.setOrigin(0, 0);
+	pursueCircle.setPosition(pursuePoint.x - pursueCircleRadius, pursuePoint.y - pursueCircleRadius);
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -89,6 +98,7 @@ void Player::CheckForInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		m_rotation -= ROTATION_SPEED;
+		
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
@@ -104,6 +114,11 @@ void Player::update(sf::Time& t_deltaTime)
 	checkBoundaries();
 	movePlayer(t_deltaTime);
 
+	playerLine.clear();
+	sf::Vertex begin{ m_playerSprite.getPosition(),sf::Color::Green };
+	playerLine.append(begin);
+	sf::Vertex end{ pursuePoint, sf::Color::Green };
+	playerLine.append(end);
 }
 
 ////// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// /// 
@@ -116,7 +131,9 @@ void Player::draw(sf::RenderWindow& m_window)
 	{
 		m_window.draw(radius);
 		m_window.draw(smallCircle);
-
+		m_window.draw(pursueCircle);
+		m_window.draw(playerLine);
+		
 	}
 }
 
@@ -125,7 +142,3 @@ sf::Vector2f Player::PlayerPos()
 	return m_playerSprite.getPosition();
 }
 
-//sf::Vector2f Player::getPos()
-//{
-//	return m_playerSprite.getPosition();
-//}

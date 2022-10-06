@@ -122,6 +122,11 @@ void Game::processKeys(sf::Event t_event)
 	{
 		mySlowArrive.canUpdate ^= true;
 	}
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num6))
+	{
+		myPursue.canUpdate ^= true;
+	}
 	
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num8))
@@ -132,7 +137,7 @@ void Game::processKeys(sf::Event t_event)
 		myFlee.tracerAlive ^= true;
 		myFastArrive.drawTracer ^= true;
 		mySlowArrive.drawTracer ^= true;
-		//myPursue.tracerAlive ^= true;
+		myPursue.drawTracer ^= true;
 
 	}
 
@@ -152,6 +157,7 @@ void Game::update(sf::Time t_deltaTime)
 	myFlee.update(t_deltaTime, thePlayer);
 	myFastArrive.update(t_deltaTime, thePlayer);
 	mySlowArrive.update(t_deltaTime, thePlayer);
+	myPursue.update(t_deltaTime, thePlayer);
 
 	if (m_exitGame)
 	{
@@ -172,6 +178,7 @@ void Game::render()
 	myFlee.draw(m_window);
 	myFastArrive.draw(m_window);
 	mySlowArrive.draw(m_window);
+	myPursue.draw(m_window);
 
 	m_window.display();
 }
