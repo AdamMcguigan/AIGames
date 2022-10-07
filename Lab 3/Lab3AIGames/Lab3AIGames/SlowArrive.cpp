@@ -11,6 +11,7 @@ void SlowArrive::update(sf::Time& t_deltaTime, Player& t_player)
 	{
 		seek(t_deltaTime, t_player);
 		arriveSlowText.setPosition(m_arrvieSprite.getPosition());
+		setVisionCone(t_player.m_playerSprite.getPosition());
 	}
 }
 
@@ -24,9 +25,53 @@ void SlowArrive::draw(sf::RenderWindow& t_window)
 		}
 		t_window.draw(m_arrvieSprite);
 		t_window.draw(arriveSlowText);
+		t_window.draw(m_leftLine);
+		t_window.draw(m_rightLine);
 	}
 }
 
+
+void SlowArrive::setVisionCone(sf::Vector2f t_targetPos)
+{
+	m_leftLine.setRotation(m_arrvieSprite.getRotation() - 90 - angleOfSight);
+	m_leftLine.setPosition(m_arrvieSprite.getPosition());
+
+	m_rightLine.setRotation(m_arrvieSprite.getRotation() - 90 + angleOfSight);
+	m_rightLine.setPosition(m_arrvieSprite.getPosition());
+
+	sf::Vector2f orientation = { std::cos(m_calculateRadianAngle * m_arrvieSprite.getRotation() - 90),std::sin(m_calculateRadianAngle * m_arrvieSprite.getRotation() - 90) };
+	sf::Vector2f distance = t_targetPos - m_arrvieSprite.getPosition();
+	distance = normalize(distance);
+
+	float dotProduct = (orientation.x * distance.x) + (orientation.y * distance.y);
+
+
+	if (dotProduct > std::cos(angleOfSight * 2))
+	{
+		if (sqrt((t_targetPos.x - m_arrvieSprite.getPosition().x) * (t_targetPos.x - m_arrvieSprite.getPosition().x) + (t_targetPos.y - m_arrvieSprite.getPosition().y) * (t_targetPos.y - m_arrvieSprite.getPosition().y)) <= 200.0f)
+		{
+			m_leftLine.setFillColor(sf::Color::Red);
+			m_rightLine.setFillColor(sf::Color::Red);
+		}
+
+		else
+		{
+			m_leftLine.setFillColor(sf::Color::Green);
+			m_rightLine.setFillColor(sf::Color::Green);
+		}
+	}
+	else
+	{
+		m_leftLine.setFillColor(sf::Color::Green);
+		m_rightLine.setFillColor(sf::Color::Green);
+	}
+}
+
+sf::Vector2f SlowArrive::normalize(sf::Vector2f normVector)
+{
+	float length = sqrt((normVector.x * normVector.x) + (normVector.y * normVector.y));
+	return { normVector.x / length, normVector.y / length };
+}
 
 void SlowArrive::setupSprites()
 {
@@ -54,54 +99,63 @@ void SlowArrive::setupSprites()
 	arriveSlowText.setOutlineColor(sf::Color::Black);
 	arriveSlowText.setFillColor(sf::Color::White);
 	arriveSlowText.setOutlineThickness(3.0f);
+
+	m_leftLine.setSize({ 200,1 });
+	m_leftLine.setFillColor(sf::Color::Green);
+	m_leftLine.setRotation(m_arrvieSprite.getRotation());
+
+	m_rightLine.setSize({ 200,1 });
+	m_rightLine.setFillColor(sf::Color::Green);
+	m_rightLine.setRotation(m_arrvieSprite.getRotation());
 }
 
-
+//Slow Arrive
 void SlowArrive::seek(sf::Time& t_deltaTime, Player& t_player)
 {
 	sf::Vector2f playerPos = t_player.m_playerSprite.getPosition();
 	sf::Vector2f currentPosition = m_arrvieSprite.getPosition();
 
-	vel = playerPos - currentPosition;
-	distance = sqrtf(vel.x * vel.x + vel.y * vel.y);
-	distanceVec = sf::Vector2f{ vel.x / distance , vel.y / distance };
-	vel = distanceVec * maxSpeed;
+	velDistance = playerPos - currentPosition;
+	distance = sqrtf(velDistance.x * velDistance.x + velDistance.y * velDistance.y);
+	distanceVec = sf::Vector2f{ velDistance.x / distance , velDistance.y / distance };
+	velDistance = distanceVec * maxSpeed;
 
+	//if the distance is greater than the outer player radius
 	if (distance > t_player.radiusF)
 	{
-		std::cout << "SEEKING PLAYER " << std::endl;
+		std::cout << "Seeking the player - Slow Arrive " << std::endl;
 	}
 	else
 	{
-		vel = vel / timeToTarget;
+		velDistance = velDistance / timeToTarget; //works in the inner circle
 
+		//setting the velocity to travel to player
 		if (distance > maxSpeed)
 		{
-
-			std::cout << "In large radius " << std::endl;
-			sf::Vector2f normalisedVelocity = { vel.x / distance ,vel.y / distance };
-			vel = normalisedVelocity;
-			vel = vel * maxSpeed * 2.0f;
+			sf::Vector2f normalisedVelocity = { velDistance.x / distance ,velDistance.y / distance };
+			velDistance = normalisedVelocity;
+			velDistance = velDistance * maxSpeed * 2.0f;
 		}
 
+		//Stopping the enemy when on the player sprite
 		if (distance < t_player.smallRadius)
 		{
-			std::cout << "Touching small radius	" << std::endl;
-			vel = { 0.0f,0.0f };
+			velDistance = { 0.0f,0.0f };
 		}
 	}
 
+	//distance between current sprite pos and the player pos
 	float dx = currentPosition.x - t_player.m_playerSprite.getPosition().x;
 	float dy = currentPosition.y - t_player.m_playerSprite.getPosition().y;
 
+	//Angle in degress
 	GetProperRot = (atan2(dy, dx)) * 180 / pi;
 	rotation = GetProperRot - 90;
 
 	m_arrvieSprite.setRotation(rotation);
-	std::cout << "Seeking angle: " << rotation << std::endl;
+	m_arrvieSprite.move(velDistance);
 
-	m_arrvieSprite.move(vel);
-
+	//Drawing Lines to player
 	LineToPlayer.clear();
 	sf::Vertex begin{ m_arrvieSprite.getPosition(), sf::Color::Transparent };
 	LineToPlayer.append(begin);

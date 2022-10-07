@@ -97,7 +97,7 @@ void PursueEnemy::pursue(sf::Time& t_deltaTime, Player& t_player)
 	distanceVec = sf::Vector2f{ velocity.x / distance, velocity.y / distance };
 	vel = distanceVec * maxSpeed;
 
-	float dX = pursueSpritePos.x - pursuePointPos.x;
+	float dX = pursueSpritePos.x - pursuePointPos.x; //distance between the endPoint at the circle and the pursue sprite
 	float dY = pursueSpritePos.y - pursuePointPos.y;
 
 	ActualRotation = (atan2(dY, dX)) * 180 / pi;

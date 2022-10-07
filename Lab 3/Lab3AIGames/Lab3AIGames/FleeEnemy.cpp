@@ -96,7 +96,7 @@ void FleeEnemy::update(sf::Time& t_deltaTime, Player& t_player)
 	}
 }
 
-void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player)
+void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player) //Reversed the seek method for flee
 {
 	sf::Vector2f playerPos = t_player.m_playerSprite.getPosition();
 	sf::Vector2f currentPosition = m_fleeSprite.getPosition();
@@ -116,7 +116,6 @@ void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player)
 
 		if (distance > radiusF)
 		{
-			std::cout << "In large radius 22 " << std::endl;
 			sf::Vector2f normalisedVelocity = { vel.x / distance ,vel.y / distance };
 			vel = normalisedVelocity;
 			vel = vel * maxSpeed;
@@ -130,15 +129,14 @@ void FleeEnemy::kinematicFlee(sf::Time& t_deltaTime, Player& t_player)
 	rotation = GetProperRot + 90; // -270
 
 	m_fleeSprite.setRotation(rotation);
-	std::cout << "flee angle: " << rotation << std::endl;
-
 	m_fleeSprite.move(vel);
 
-	LineToPlayer.clear();
+
+	/*LineToPlayer.clear();
 	sf::Vertex begin{ m_fleeSprite.getPosition(), sf::Color::Yellow };
 	LineToPlayer.append(begin);
 	sf::Vertex end{ playerPos, sf::Color::Yellow };
-	LineToPlayer.append(end);
+	LineToPlayer.append(end);*/
 }
 
 void FleeEnemy::setVisionCone(sf::Vector2f t_targetPos)

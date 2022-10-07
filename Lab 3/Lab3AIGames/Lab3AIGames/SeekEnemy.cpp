@@ -93,22 +93,23 @@ void SeekEnemy::seek(sf::Time& t_deltaTime, Player& t_player)
 	sf::Vector2f playerPos = t_player.m_playerSprite.getPosition();
 	sf::Vector2f currentPosition = m_seekSprite.getPosition();
 
-	vel = playerPos - currentPosition;
-	distance = sqrtf(vel.x * vel.x + vel.y * vel.y);
-	distanceVec = sf::Vector2f{ vel.x / distance , vel.y / distance };
-	vel = distanceVec * maxSpeed;
+	velDistance = playerPos - currentPosition;
+	distance = sqrtf(velDistance.x * velDistance.x + velDistance.y * velDistance.y);
+	distanceVec = sf::Vector2f{ velDistance.x / distance , velDistance.y / distance };
+	velDistance = distanceVec * maxSpeed;
 
+	//Grabbing the distance between the sprites current Pos and the players pos
 	float dx = currentPosition.x - t_player.m_playerSprite.getPosition().x;
 	float dy = currentPosition.y - t_player.m_playerSprite.getPosition().y;
 
+	//change that to degrees
 	GetProperRot = (atan2(dy, dx)) * 180 / pi;
 	rotation = GetProperRot - 90;
 
 	m_seekSprite.setRotation(rotation);
-	std::cout << "Seeking angle: " << rotation << std::endl;
-
-	m_seekSprite.move(vel);
+	m_seekSprite.move(velDistance);
 	
+	//Drawing lines to player
 	LineToPlayer.clear();
 	sf::Vertex begin{ m_seekSprite.getPosition(), sf::Color::Transparent};
 	LineToPlayer.append(begin);

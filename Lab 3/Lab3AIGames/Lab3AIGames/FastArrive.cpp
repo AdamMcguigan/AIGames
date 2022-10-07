@@ -130,8 +130,6 @@ void FastArrive::seek(sf::Time& t_deltaTime, Player& t_player)
 
 		if (distance > maxSpeed)
 		{
-
-			std::cout << "In large radius " << std::endl;
 			sf::Vector2f normalisedVelocity = { vel.x / distance ,vel.y / distance };
 			vel = normalisedVelocity;
 			vel = vel * maxSpeed * 2.0f;
@@ -139,7 +137,6 @@ void FastArrive::seek(sf::Time& t_deltaTime, Player& t_player)
 
 		if (distance < t_player.smallRadius)
 		{
-			std::cout << "Touching small radius	" << std::endl;
 			vel = { 0.0f,0.0f };
 		}
 	}
@@ -151,10 +148,9 @@ void FastArrive::seek(sf::Time& t_deltaTime, Player& t_player)
 	rotation = GetProperRot - 90;
 
 	m_arrvieSprite.setRotation(rotation);
-	std::cout << "Seeking angle: " << rotation << std::endl;
-
 	m_arrvieSprite.move(vel);
 
+	//Drawing lines to player
 	LineToPlayer.clear();
 	sf::Vertex begin{ m_arrvieSprite.getPosition(), sf::Color::Transparent };
 	LineToPlayer.append(begin);

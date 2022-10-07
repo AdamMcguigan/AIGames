@@ -5,13 +5,14 @@ Wander::Wander()
 	setupSprite();
 }
 
-void Wander::update(sf::Time& t_deltaTime)
+void Wander::update(sf::Time& t_deltaTime, Player& t_player)
 {
 	if (canUpdate == true)
 	{
 		randomWanderRadius();
 		wander(t_deltaTime);
 		checkBoundaries();
+		setVisionCone(t_player.m_playerSprite.getPosition());
 
 		m_wanderText.setPosition(m_npcSprite.getPosition().x - 30, m_npcSprite.getPosition().y);
 
@@ -34,7 +35,8 @@ void Wander::draw(sf::RenderWindow& m_window)
 		}
 		m_window.draw(m_npcSprite);
 		m_window.draw(m_wanderText);
-
+		m_window.draw(m_leftLine);
+		m_window.draw(m_rightLine);
 	}
 }
 
@@ -64,6 +66,14 @@ void Wander::setupSprite()
 	m_wanderText.setOutlineColor(sf::Color::Black);
 	m_wanderText.setFillColor(sf::Color::White);
 	m_wanderText.setOutlineThickness(3.0f);
+
+	m_leftLine.setSize({ 200,1 });
+	m_leftLine.setFillColor(sf::Color::Green);
+	m_leftLine.setRotation(m_npcSprite.getRotation());
+
+	m_rightLine.setSize({ 200,1 });
+	m_rightLine.setFillColor(sf::Color::Green);
+	m_rightLine.setRotation(m_npcSprite.getRotation());
 }
 
 
@@ -92,8 +102,9 @@ void Wander::checkBoundaries()
 void Wander::wander(sf::Time& t_deltaTime)
 {
 	angle = m_npcSprite.getRotation();
-	angle = angle + randomInt;
+	angle = angle + wanderOffset;
 
+	//Resetting the angle 
 	if (angle == 360.0)
 	{
 		angle = 0;
@@ -108,8 +119,7 @@ void Wander::wander(sf::Time& t_deltaTime)
 	linePoint.x = m_npcSprite.getPosition().x + radius * cos(angleInRads);
 	linePoint.y = m_npcSprite.getPosition().y + radius * sin(angleInRads);
 
-	std::cout << "Wandering angle: " << angle << std::endl;
-
+	//will rotate the wander left and right.
 	m_velocity.x = m_speed * sin(angle * t_deltaTime.asMilliseconds() / 1000);
 	m_velocity.y = m_speed * -cos(angle * t_deltaTime.asMilliseconds() / 1000);
 
@@ -124,7 +134,48 @@ void Wander::wander(sf::Time& t_deltaTime)
 
 void Wander::randomWanderRadius()
 {
-	randomInt = rand() % (3 + 3 + 1) + -3; //random number between -1 to 1 ;
-	std::cout << "Alien rotate offset: " << randomInt << std::endl;
+	wanderOffset = rand() % (3 + 3) + -3; //random number between -1 to 1 ;
+}
+
+void Wander::setVisionCone(sf::Vector2f t_targetPos)
+{
+	m_leftLine.setRotation(m_npcSprite.getRotation() - 90 - angleOfSight);
+	m_leftLine.setPosition(m_npcSprite.getPosition());
+
+	m_rightLine.setRotation(m_npcSprite.getRotation() - 90 + angleOfSight);
+	m_rightLine.setPosition(m_npcSprite.getPosition());
+
+	sf::Vector2f orientation = { std::cos(m_calculateRadianAngle * m_npcSprite.getRotation() - 90),std::sin(m_calculateRadianAngle * m_npcSprite.getRotation() - 90) };
+	sf::Vector2f distance = t_targetPos - m_npcSprite.getPosition();
+	distance = normalize(distance);
+
+	float dotProduct = (orientation.x * distance.x) + (orientation.y * distance.y);
+
+
+	if (dotProduct > std::cos(angleOfSight * 2))
+	{
+		if (sqrt((t_targetPos.x - m_npcSprite.getPosition().x) * (t_targetPos.x - m_npcSprite.getPosition().x) + (t_targetPos.y - m_npcSprite.getPosition().y) * (t_targetPos.y - m_npcSprite.getPosition().y)) <= 200.0f)
+		{
+			m_leftLine.setFillColor(sf::Color::Red);
+			m_rightLine.setFillColor(sf::Color::Red);
+		}
+
+		else
+		{
+			m_leftLine.setFillColor(sf::Color::Green);
+			m_rightLine.setFillColor(sf::Color::Green);
+		}
+	}
+	else
+	{
+		m_leftLine.setFillColor(sf::Color::Green);
+		m_rightLine.setFillColor(sf::Color::Green);
+	}
+}
+
+sf::Vector2f Wander::normalize(sf::Vector2f normVector)
+{
+	float length = sqrt((normVector.x * normVector.x) + (normVector.y * normVector.y));
+	return { normVector.x / length, normVector.y / length };
 }
 

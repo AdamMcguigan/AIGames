@@ -152,7 +152,7 @@ void Game::update(sf::Time t_deltaTime)
 {
 	//Calling the movement functions for the Player and NPC 
 	thePlayer.update(t_deltaTime);
-	myWander.update(t_deltaTime);
+	myWander.update(t_deltaTime, thePlayer);
 	mySeek.update(t_deltaTime, thePlayer);
 	myFlee.update(t_deltaTime, thePlayer);
 	myFastArrive.update(t_deltaTime, thePlayer);
