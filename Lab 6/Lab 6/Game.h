@@ -1,33 +1,26 @@
-
 #ifndef GAME_HPP
 #define GAME_HPP
-
 #include <SFML/Graphics.hpp>
-#include "ScreenSize.h"
 #include "Grid.h"
-
 class Game
 {
 public:
-	Game();
-	~Game();
-	void run();
-
-	Grid m_grid;
+    Game();
+    ~Game();
+    void run();
+    Grid m_grid;
+    sf::Vector2i mousePosition;
 private:
+    void processEvents();
+    void processKeys(sf::Event t_event);
+    void processMouse(sf::Event t_event);
+    void update(sf::Time t_deltaTime);
+    void render();
 
-	void processEvents();
-	void processKeys(sf::Event t_event);
-	void update(sf::Time t_deltaTime);
-	void render();
-	sf::Font m_font;
-
-	sf::RenderWindow m_window;
-
-	bool m_exitGame;
+    sf::RenderWindow m_window; // main SFML window
+    bool m_exitGame; // control exiting game
 
 };
-
 #endif 
 
 

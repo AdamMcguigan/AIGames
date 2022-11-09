@@ -1,47 +1,123 @@
 #pragma once
+#ifdef _DEBUG 
+#pragma comment(lib,"sfml-graphics-d.lib") 
+#pragma comment(lib,"sfml-audio-d.lib") 
+#pragma comment(lib,"sfml-system-d.lib") 
+#pragma comment(lib,"sfml-window-d.lib") 
+#pragma comment(lib,"sfml-network-d.lib") 
+#else 
+#pragma comment(lib,"sfml-graphics.lib") 
+#pragma comment(lib,"sfml-audio.lib") 
+#pragma comment(lib,"sfml-system.lib") 
+#pragma comment(lib,"sfml-window.lib") 
+#pragma comment(lib,"sfml-network.lib") 
+#endif 
+
 #include <iostream>
-#include "SFML/Graphics.hpp"
-
-#include "ScreenSize.h"
-#include "Cell.h"
 #include <vector>
-using namespace std;
+#include <queue>
+#include <functional>
+#include <SFML/Graphics.hpp>
+#include <stack>
 
 
-class Grid
-{
-	Cell sampleCell;
-	Cell* atIndex(int t_id);
-	std::vector<Cell> m_GridVec;
-	std::vector<std::vector<Cell>> m_theTableVector;
 
-	const static int MAX_ROWS = 50;
-	const static int MAX_COLS = 50;
-	static const int MAX_CELLS = 2500;
-
-	bool m_startPosChosen = false;
-	bool m_endPosChosen = false;
-	bool heatMapCreated = false;
-
-	int endId;
-	int startId;
-
+class Cell {
 public:
-	Grid();
-	~Grid();
+	Cell();
+	~Cell();
+	int m_id = 0;
+	int m_previousCellId{ -1 };
+	bool m_marked = false;
+	bool m_isPassable = true;
+	bool m_isPuddle = false;
+	bool m_isWall = false;
 
-	void createHeatMap(Cell* t_startCell, Cell* t_endpoint);
-	void setIntraversable();
-	void setNeighbours(Cell* t_cell);
+	int m_centreX = 0;
+	int m_centreY = 0;
 
-	void selectStartEndPos(sf::RenderWindow& t_window);
-	void setupGrid();
+	float m_h;
+	float m_pathCost;
+
+
+
+	std::vector<int> m_diagonalList;
+
+	Cell* m_previous;
+
+	Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font);
+	Cell* previous() const;
+	int weight() const;
+	void setPrevious(Cell* previous)
+	{
+		m_previous = previous;
+	}
+
+	bool marked() const;
+	void setMarked(bool t_marked);
+	void addNeighbour(int t_cellID);
+	int returnID() const {
+		return m_id;
+	}
 	void render(sf::RenderWindow& t_window);
 
-	void update(sf::Time& t_deltatime);
-	void setUpCellIDNumText(sf::Font& m_font);
 
-	sf::Text gridNum[MAX_CELLS];
+	sf::RectangleShape m_shape;
+
+	std::vector<int> m_neighbours;
+
+	int myCost = -1;
+	sf::Text m_cellcost;
+	sf::Font m_fonts;
+	void addCost(int m_cost);
+	bool m_showCost = false;
 
 };
 
+class Grid {
+public:
+	Grid();
+	~Grid();
+	int numberOfNonTraversals = 200;
+	sf::RectangleShape m_notTraversal[200];
+	Cell& returnCell(int t_id);
+
+	void neighbours(int t_row, int t_col, std::vector<Cell>& t_cells, int t_current);
+	void reset();
+	void initialiseMap();
+	void update(sf::RenderWindow& t_window);
+	void checkForMouseClick(sf::RenderWindow& t_window, sf::Vector2i& t_mousePos, bool t_left, bool t_right);
+	void render(sf::RenderWindow& t_window);
+	void aStar(Cell* start, Cell* dest);
+	Cell* findCellPoint(sf::Vector2f point);
+
+
+	std::vector<Cell>& returnAllCells();
+
+	sf::Text m_cellId[2501];
+	sf::Font m_font;
+	std::vector<std::vector<Cell>> m_cellsVectorArray;
+	std::vector<Cell> m_cellsArray;
+
+
+	int m_maxRows = 50;
+	int m_maxCols = 50;
+	int m_currentRow;
+	int m_currentCol;
+	int randomCellId = 0;
+	int startPointId = 0;
+	int endPointID = 0;
+	bool isStartPosSelected = false;
+	bool isEndPosSelected = false;
+
+	void makeCost();
+	void makeStartPos(sf::RenderWindow& t_window);
+	void makeEndPos(sf::RenderWindow& t_window);
+	void setCost(int t_p, int t_col, int t_cal, int t_cost);
+	void verticalCells(int t_point, int t_row, int t_cost);
+	void horizontalCells(int t_point, int t_col, int t_cost);
+	
+
+private:
+
+};
