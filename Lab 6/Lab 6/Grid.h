@@ -12,12 +12,12 @@
 #pragma comment(lib,"sfml-window.lib") 
 #pragma comment(lib,"sfml-network.lib") 
 #endif 
-
 #include <iostream>
 #include <vector>
 #include <queue>
 #include <functional>
 #include <SFML/Graphics.hpp>
+
 #include <stack>
 
 
@@ -37,10 +37,11 @@ public:
 	int m_centreY = 0;
 
 	float m_h;
-	float m_pathCost;
+	int m_pathCost = -1;
+	int myCost = -1;
 
 
-
+	bool drawCost = false;
 	std::vector<int> m_diagonalList;
 
 	Cell* m_previous;
@@ -52,7 +53,6 @@ public:
 	{
 		m_previous = previous;
 	}
-
 	bool marked() const;
 	void setMarked(bool t_marked);
 	void addNeighbour(int t_cellID);
@@ -61,16 +61,14 @@ public:
 	}
 	void render(sf::RenderWindow& t_window);
 
-
-	sf::RectangleShape m_shape;
-
-	std::vector<int> m_neighbours;
-
-	int myCost = -1;
 	sf::Text m_cellcost;
 	sf::Font m_fonts;
 	void addCost(int m_cost);
 	bool m_showCost = false;
+
+	sf::RectangleShape m_shape;
+
+	std::vector<int> m_neighbours;
 
 };
 
@@ -82,19 +80,28 @@ public:
 	sf::RectangleShape m_notTraversal[200];
 	Cell& returnCell(int t_id);
 
+	bool isStartPosSelected;
+	bool isEndPosSelected;
+	int endPointId;
+	int startPointId;
 	void neighbours(int t_row, int t_col, std::vector<Cell>& t_cells, int t_current);
 	void reset();
 	void initialiseMap();
 	void update(sf::RenderWindow& t_window);
-	void checkForMouseClick(sf::RenderWindow& t_window, sf::Vector2i& t_mousePos, bool t_left, bool t_right);
+	void makeStartPos(sf::RenderWindow& t_window);
+	void makeEndPos(sf::RenderWindow& t_window);
+	void makeCost();
+	void verticalCells(int t_point, int t_row, int t_cost);
+	void horizontalCells(int t_point, int t_col, int t_cost);
+	void setCost(int t_p, int t_col, int t_cal, int t_cost);
+	void notTraversalsCost();
 	void render(sf::RenderWindow& t_window);
 	void aStar(Cell* start, Cell* dest);
 	Cell* findCellPoint(sf::Vector2f point);
 
-
 	std::vector<Cell>& returnAllCells();
 
-	sf::Text m_cellId[2501];
+	//sf::Text m_cellId[2501];
 	sf::Font m_font;
 	std::vector<std::vector<Cell>> m_cellsVectorArray;
 	std::vector<Cell> m_cellsArray;
@@ -105,18 +112,6 @@ public:
 	int m_currentRow;
 	int m_currentCol;
 	int randomCellId = 0;
-	int startPointId = 0;
-	int endPointID = 0;
-	bool isStartPosSelected = false;
-	bool isEndPosSelected = false;
-
-	void makeCost();
-	void makeStartPos(sf::RenderWindow& t_window);
-	void makeEndPos(sf::RenderWindow& t_window);
-	void setCost(int t_p, int t_col, int t_cal, int t_cost);
-	void verticalCells(int t_point, int t_row, int t_cost);
-	void horizontalCells(int t_point, int t_col, int t_cost);
-	
 
 private:
 

@@ -1,6 +1,5 @@
 #include "Grid.h"
 
-
 class AStarComparer
 {
 public:
@@ -10,6 +9,7 @@ public:
 
 	}
 };
+
 
 Cell::Cell()
 {
@@ -22,6 +22,7 @@ Cell::~Cell()
 
 Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 {
+	m_cellcost.setFont(t_font);
 	m_id = t_cellID;
 	m_shape.setSize(sf::Vector2f(900 / 50, 900 / 50));
 	m_shape.setFillColor(sf::Color::Transparent);
@@ -30,8 +31,6 @@ Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 	m_shape.setPosition(t_position);
 	m_isPassable = true;
 	m_previousCellId = -1;
-
-	m_cellcost.setFont(t_font);
 }
 
 Cell* Cell::previous() const
@@ -57,22 +56,23 @@ void Cell::setMarked(bool t_marked) //bool that is checking if the cell is marke
 void Cell::render(sf::RenderWindow& t_window)
 {
 	t_window.draw(m_shape);
+	if (drawCost == true)
+	{
+		t_window.draw(m_cellcost);
+	}
 }
 
 void Cell::addCost(int m_cost)
 {
 	myCost = m_cost;
-	std::cout << m_cost << std::endl;
 
 
 	if (myCost != -1)
 	{
-		for (int i = 0; i < 2500; i++)
-		{
-			m_cellcost.setPosition(m_shape.getPosition());
-			m_cellcost.setCharacterSize(10U);
-			m_cellcost.setString(std::to_string(m_cost));
-		}
+		m_cellcost.setPosition(m_shape.getPosition());
+		m_cellcost.setCharacterSize(10U);
+		m_cellcost.setString(std::to_string(m_cost));
+
 		m_showCost = true;
 	}
 	else
@@ -98,10 +98,6 @@ Grid::~Grid()
 {
 }
 
-//Grid::Grid(int t_rows, int t_cols)
-//{
-//
-//}
 
 Cell& Grid::returnCell(int t_id)
 {
@@ -152,6 +148,7 @@ void Grid::initialiseMap()
 	if (!m_font.loadFromFile("Assets/Fonts/ariblk.ttf"))
 	{
 		std::cout << "error with font file file";
+
 	}
 
 	sf::Vector2f cellPositions{ 0,0 };
@@ -171,26 +168,20 @@ void Grid::initialiseMap()
 			}
 
 			count++;
-			m_cellId[count].setFont(m_font);
-			m_cellId[count].setCharacterSize(6);
-			m_cellId[count].setFillColor(sf::Color::White);
-			m_cellId[count].setString(std::to_string(count));
-			m_cellId[count].setPosition(cellPositions);
-
-
+	
 			m_cellsArray.push_back(cell);// pushing back the cell
 		}
 	}
 	int p = 0;
 
-	//Obstacles -------------------------------------------------------------
+
 	for (int index = 0; index < numberOfNonTraversals; index++)
 	{
 		randomCellId = rand() % 2500;
 		m_notTraversal[index].setSize(sf::Vector2f(18.0f, 18.0f));
-		m_notTraversal[index].setFillColor(sf::Color::Cyan); //Color of obstacles
+		m_notTraversal[index].setFillColor(sf::Color::Cyan); //color of obstacles
 		m_notTraversal[index].setPosition((m_cellsArray.at(randomCellId).m_shape.getPosition()));
-		m_cellsArray.at(randomCellId).setMarked(true); //To make sure we dont go through the traversables.
+		m_cellsArray.at(randomCellId).setMarked(true);
 	}
 
 
@@ -203,12 +194,6 @@ void Grid::initialiseMap()
 	m_cellsArray.size();
 	int i = 0;
 	int h = 0;
-
-
-
-
-
-
 }
 
 void Grid::update(sf::RenderWindow& t_window) // update method
@@ -217,34 +202,153 @@ void Grid::update(sf::RenderWindow& t_window) // update method
 	makeEndPos(t_window);
 }
 
-void Grid::checkForMouseClick(sf::RenderWindow& t_window, sf::Vector2i& t_mousePos, bool t_left, bool t_right)
+void Grid::makeStartPos(sf::RenderWindow& t_window)
 {
-	std::cout << "hello " << std::endl;
+	if (isStartPosSelected == false)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			sf::Vector2f translated_pos = sf::Vector2f{ sf::Mouse::getPosition(t_window) };
+			int xPos = translated_pos.x / 18; int yPos = translated_pos.y / 18;
+			float id = yPos * 50;
+			id += xPos;
+			if (m_cellsArray.at(id).marked() == false)
+			{
+				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::Green);
+				isStartPosSelected = true;
+				startPointId = id;
+			}
+		}
+	}
+}
 
-	sf::Vector2f translated_pos = t_window.mapPixelToCoords(t_mousePos);
+void Grid::makeEndPos(sf::RenderWindow& t_window)
+{
+	if (isEndPosSelected == false)
+	{
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+		{
+			sf::Vector2f translated_pos = sf::Vector2f{ sf::Mouse::getPosition(t_window) };
+			int xPos = translated_pos.x / 18; int yPos = translated_pos.y / 18;
+			float id = yPos * 50;
+			id += xPos;
+			if (m_cellsArray.at(id).marked() == false)
+			{
+				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::Red);
+				isEndPosSelected = true;
+				endPointId = id;
+				for (int i = 0; i < 2500; i++) // 40 * 40 = 1600
+				{
+					m_cellsArray[i].drawCost = true;
+				}
+				makeCost();
+				notTraversalsCost();
+			}
+		}
+	}
+}
 
+void Grid::makeCost()
+{
+	if (m_cellsArray.at(endPointId).marked() == false)
+	{
+		int cost = 0;
+		m_cellsArray[endPointId].addCost(cost);
+		verticalCells(endPointId, 50, cost);
+		verticalCells(endPointId, -50, cost);
+		horizontalCells(endPointId, +1, cost);
+		horizontalCells(endPointId, -1, cost);
+
+		setCost(endPointId, -50, -1, cost);
+		setCost(endPointId, -50, +1, cost);
+		setCost(endPointId, +50, -1, cost);
+		setCost(endPointId, +50, +1, cost);
+	}
+}
+
+void Grid::verticalCells(int t_point, int t_row, int t_cost)
+{
+	int p = t_point;
+	int c = t_cost;
+	while (p >= 0 && p < 2500)
+	{
+		m_cellsArray[p].addCost(c);
+		p += t_row;
+		c++;
+	}
+
+}
+
+void Grid::horizontalCells(int t_point, int t_col, int t_cost)
+{
+	int p = t_point + t_col;
+	int c = t_cost + 1;
+
+	if (t_col > 0)
+	{
+		while (p % 50 <= 50 - 1 && p % 50 != 0)
+		{
+			m_cellsArray[p].addCost(c);
+			p += t_col;
+			c++;
+		}
+	}
+	else if (t_col < 0)
+	{
+		while (p % 50 != 50 - 1 && p % 50 >= 0)
+		{
+			m_cellsArray[p].addCost(c);
+			p += t_col;
+			c++;
+		}
+	}
+}
+
+void Grid::setCost(int t_p, int t_col, int t_cal, int t_cost)
+{
+	int calc = t_p + t_col + t_cal;
+	if (calc > 0 && calc < 2500 && t_p % 50 == 0)
+	{
+		m_cellsArray[calc].addCost(t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+	}
+	else if (calc > 0 && calc < 2500 && t_p % 50 >= 50 - 1)
+	{
+		m_cellsArray[calc].addCost(t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+	}
+	else if (calc >= 0 && calc < 2500)
+	{
+		m_cellsArray[calc].addCost(t_cost);
+		setCost(calc, t_col, t_cal, t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+		verticalCells(calc, t_col, t_cost + 1);
+		horizontalCells(calc, t_cal, t_cost + 1);
+	}
+}
+
+void Grid::notTraversalsCost()
+{
 	for (int i = 0; i < 2500; i++)
 	{
-		if (findCellPoint(translated_pos))
-		{
-			std::cout << "hello " << std::endl;
-			if (t_left && !t_right)
-			{
-				std::cout << "hello " << std::endl;
-				m_notTraversal[0].setPosition((m_cellsArray.at(2).m_shape.getPosition()));
-			}
+		if (m_cellsArray[i].marked() == true) {
+
+			m_cellsArray[i].addCost(10000);
+			m_cellsArray[i].drawCost = false;
 		}
 
 	}
 }
-
 std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 {
 	return m_cellsArray;
 }
 
 
-//A Star Algorithm - 3rd year
+//A Star Algorithm
+
 void Grid::aStar(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
@@ -276,11 +380,9 @@ void Grid::aStar(Cell* start, Cell* dest)
 		start->m_pathCost = 0; //Initialise g[start] to 0
 		start->setMarked(true); //Mark(start)
 		pq.push(start); //Add start to pq
-		//std::cout << "Visiting: " << pq.top()->m_id << std::endl;
 
 		while (pq.size() != 0 && pq.top() != goal) //While the queue is not empty AND pq.top() != g
 		{
-
 			auto iter = pq.top()->m_neighbours.begin();
 			auto endIter = pq.top()->m_neighbours.end();
 
@@ -354,148 +456,17 @@ Cell* Grid::findCellPoint(sf::Vector2f point)
 	return nullptr;
 }
 
-void Grid::makeCost()
-{
-	if (m_cellsArray.at(endPointID).marked() == false)
-	{
-		int cost = 0;
-		m_cellsArray[endPointID].addCost(cost);
-		verticalCells(endPointID, 50, cost);
-		verticalCells(endPointID, -50, cost);
-		horizontalCells(endPointID, +1, cost);
-		horizontalCells(endPointID, -1, cost);
-
-		setCost(endPointID, -50, -1, cost);
-		setCost(endPointID, -50, +1, cost);
-		setCost(endPointID, +50, -1, cost);
-		setCost(endPointID, +50, +1, cost);
-	}
-}
-
-void Grid::makeStartPos(sf::RenderWindow& t_window)
-{
-	if (isStartPosSelected == false)
-	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			sf::Vector2f translated_pos = sf::Vector2f{ sf::Mouse::getPosition(t_window) };
-			int xPos = translated_pos.x / 18; int yPos = translated_pos.y / 18;
-			float id = yPos * 50;
-			id += xPos;
-			if (m_cellsArray.at(id).marked() == false)
-			{
-				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::White);
-				isStartPosSelected = true;
-				startPointId = id;
-			}
-		}
-	}
-}
-
-void Grid::makeEndPos(sf::RenderWindow& t_window)
-{
-	if (isEndPosSelected == false)
-	{
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-		{
-			sf::Vector2f translated_pos = sf::Vector2f{ sf::Mouse::getPosition(t_window) };
-			int xPos = translated_pos.x / 18; int yPos = translated_pos.y / 18;
-			float id = yPos * 50;
-			id += xPos;
-			if (m_cellsArray.at(id).marked() == false)
-			{
-				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::Blue);
-				isEndPosSelected = true;
-				endPointID = id;
-				for (int i = 0; i < 2500; i++) // 40 * 40 = 1600
-				{
-					m_cellsArray[i].m_showCost = true;
-				}
-				makeCost();
-			}
-		}
-	}
-}
-
-void Grid::setCost(int t_p, int t_col, int t_cal, int t_cost)
-{
-	int calc = t_p + t_col + t_cal;
-	if (calc > 0 && calc < 2500 && t_p % 50 == 0)
-	{
-		m_cellsArray[calc].addCost(t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-	}
-	else if (calc > 0 && calc < 2500 && t_p % 50 >= 50 - 1)
-	{
-		m_cellsArray[calc].addCost(t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-	}
-	else if (calc >= 0 && calc < 2500)
-	{
-		m_cellsArray[calc].addCost(t_cost);
-		setCost(calc, t_col, t_cal, t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-		verticalCells(calc, t_col, t_cost + 1);
-		horizontalCells(calc, t_cal, t_cost + 1);
-	}
-}
-
-void Grid::verticalCells(int t_point, int t_row, int t_cost)
-{
-	int p = t_point;
-	int c = t_cost;
-	while (p >= 0 && p < 2500)
-	{
-		m_cellsArray[p].addCost(c);
-		p += t_row;
-		c++;
-	}
-}
-
-void Grid::horizontalCells(int t_point, int t_col, int t_cost)
-{
-	int p = t_point + t_col;
-	int c = t_cost + 1;
-
-	if (t_col > 0)
-	{
-		while (p % 50 <= 50 - 1 && p % 50 != 0)
-		{
-			m_cellsArray[p].addCost(c);
-			p += t_col;
-			c++;
-		}
-	}
-	else if (t_col < 0)
-	{
-		while (p % 50 != 50 - 1 && p % 50 >= 0)
-		{
-			m_cellsArray[p].addCost(c);
-			p += t_col;
-			c++;
-		}
-	}
-}
-
-void Grid::disableTraversals()
-{
-
-}
-
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 {
-
 	for (int index = 0; index < numberOfNonTraversals; index++)
 	{
 		t_window.draw(m_notTraversal[index]);
 	}
-
 	for (int index = 0; index < 2500; index++)
 	{
 		m_cellsArray.at(index).render(t_window);
-		t_window.draw(m_cellsArray.at(index).m_cellcost);
+		//t_window.draw(m_cellsArray.at(index).m_cellcost);
+		//t_window.draw(m_cellId[index]);
 	}
 
 }
