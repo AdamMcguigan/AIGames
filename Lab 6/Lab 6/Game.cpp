@@ -61,7 +61,7 @@ void Game::update(sf::Time t_deltaTime)
 
 void Game::render()
 {
-	m_window.clear(sf::Color{ 92, 77, 55 });
+	m_window.clear(sf::Color::Black);
 
 	m_grid.render(m_window);
 	m_window.display();

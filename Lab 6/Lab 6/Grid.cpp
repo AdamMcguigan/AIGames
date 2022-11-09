@@ -5,7 +5,7 @@ class AStarComparer
 public:
 	bool operator()(Cell* t_n1, Cell* t_n2) const
 	{
-		return (t_n1->m_h + t_n1->m_pathCost) > (t_n2->m_h + t_n2->m_pathCost);
+		return (t_n1->getCost() + t_n1->myCost) > (t_n2->getCost() + t_n2->myCost);
 
 	}
 };
@@ -81,6 +81,11 @@ void Cell::addCost(int m_cost)
 	}
 }
 
+int Cell::getCost()
+{
+	return myCost;
+}
+
 void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
 {
 	m_neighbours.push_back(t_cellID);
@@ -89,7 +94,6 @@ void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
 
 Grid::Grid()
 {
-
 	initialiseMap();
 
 }
@@ -180,6 +184,10 @@ void Grid::initialiseMap()
 		randomCellId = rand() % 2500;
 		m_notTraversal[index].setSize(sf::Vector2f(18.0f, 18.0f));
 		m_notTraversal[index].setFillColor(sf::Color::Cyan); //color of obstacles
+
+		m_pathTaken[index].setSize(sf::Vector2f(18.0f, 18.0f));
+		m_pathTaken[index].setFillColor(sf::Color::Yellow);
+
 		m_notTraversal[index].setPosition((m_cellsArray.at(randomCellId).m_shape.getPosition()));
 		m_cellsArray.at(randomCellId).setMarked(true);
 	}
@@ -202,7 +210,7 @@ void Grid::update(sf::RenderWindow& t_window) // update method
 	makeEndPos(t_window);
 }
 
-void Grid::makeStartPos(sf::RenderWindow& t_window)
+int Grid::makeStartPos(sf::RenderWindow& t_window)
 {
 	if (isStartPosSelected == false)
 	{
@@ -217,12 +225,13 @@ void Grid::makeStartPos(sf::RenderWindow& t_window)
 				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::Green);
 				isStartPosSelected = true;
 				startPointId = id;
+				return startPointId;
 			}
 		}
 	}
 }
 
-void Grid::makeEndPos(sf::RenderWindow& t_window)
+int Grid::makeEndPos(sf::RenderWindow& t_window)
 {
 	if (isEndPosSelected == false)
 	{
@@ -240,9 +249,12 @@ void Grid::makeEndPos(sf::RenderWindow& t_window)
 				for (int i = 0; i < 2500; i++) // 40 * 40 = 1600
 				{
 					m_cellsArray[i].drawCost = true;
+					m_cellsArray[i].m_isPassable = true;
 				}
 				makeCost();
 				notTraversalsCost();
+				callAstar(startPointId, endPointId);
+				return endPointId;
 			}
 		}
 	}
@@ -335,20 +347,48 @@ void Grid::notTraversalsCost()
 	{
 		if (m_cellsArray[i].marked() == true) {
 
-			m_cellsArray[i].addCost(10000);
+			m_cellsArray[i].addCost(10000); //Making sure we dont go through wall obstacles
 			m_cellsArray[i].drawCost = false;
+			m_cellsArray[i].m_isPassable = false;
+			m_cellsArray[i].m_shape.setFillColor(sf::Color::Cyan);
 		}
 
 	}
 }
+
+void Grid::callAstar(int t_start, int t_end)
+{
+	Cell* start;
+	Cell* end;
+	start = &returnCell(t_start);
+	end = &returnCell(t_end);
+	aStar(start, end);
+	int i = 0;
+	int index = end->m_id;
+	m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
+	if (m_pathFound.empty() == true)
+	{
+		m_pathFound.push_back(index);
+		while (m_cellsArray.at(index).m_previous != nullptr)
+		{
+			//std::cout << m_cellsArray.at(index).m_previous->m_id << std::endl;
+
+			m_pathFound.push_back(m_cellsArray.at(index).m_previous->m_id);
+			m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
+			index = m_cellsArray.at(index).m_previous->m_id;
+			i++;
+		}
+	}
+
+}
+
 std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 {
 	return m_cellsArray;
 }
 
 
-//A Star Algorithm
-
+//A Star Algorithm - 3rd Year Adapted for flow field.
 void Grid::aStar(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
@@ -366,9 +406,9 @@ void Grid::aStar(Cell* start, Cell* dest)
 		int xTwo = goal->m_centreX;
 		int yTwo = goal->m_centreY;
 
-		m_cellsArray[i].m_h = abs(xTwo - xOne) + abs(yTwo - yOne);  //Calculate h[v]
+		//m_cellsArray[i].m_h = abs(xTwo - xOne) + abs(yTwo - yOne);  //Calculate h[v]
 
-		m_cellsArray[i].m_pathCost = dist / 10;  //Initialise g[v] to infinity
+		m_cellsArray[i].myCost = dist / 10;  //Initialise g[v] to infinity
 		m_cellsArray[i].setPrevious(nullptr);
 		m_cellsArray[i].setMarked(false);
 
@@ -377,7 +417,7 @@ void Grid::aStar(Cell* start, Cell* dest)
 
 	if (goal != nullptr && start != nullptr)
 	{
-		start->m_pathCost = 0; //Initialise g[start] to 0
+		start->myCost = 0; //Initialise g[start] to 0
 		start->setMarked(true); //Mark(start)
 		pq.push(start); //Add start to pq
 
@@ -396,34 +436,21 @@ void Grid::aStar(Cell* start, Cell* dest)
 					float weightOfArc = 0;
 					float distToChild = 0;
 
-					for (int diagId : mychild->m_diagonalList)
-					{
-						if (diagId == pq.top()->m_id)
-						{
-							weightOfArc = 1.44;
-						}
-					}
+					weightOfArc = mychild->weight(); //g(child)
 
-					if (weightOfArc == 0)
-					{
-						weightOfArc = mychild->weight(); //g(child)
+					distToChild = (weightOfArc + pq.top()->myCost);
 
-					}
-
-					if (mychild->m_isPuddle == true)
+					if (distToChild < mychild->myCost && mychild->m_isPassable == true) //If ( distToChild < f(child) )
 					{
-						weightOfArc = 1.5f;//Add child to the pq
-					}
-					if (mychild->m_isWall == true)
-					{
-						weightOfArc = 10.0f;//Add child to the pq
-					}
-					distToChild = (weightOfArc + pq.top()->m_pathCost);
-
-					if (distToChild < mychild->m_pathCost) //If ( distToChild < f(child) )
-					{
-						mychild->m_pathCost = distToChild; //let f[child] = distToChild
+						mychild->myCost = distToChild; //let f[child] = distToChild
 						mychild->setPrevious(pq.top()); //Set previous pointer of child to pq.top()
+						//mychild->m_shape.setFillColor(sf::Color::Red);						//uncomment to see how it expands
+
+						if (mychild == goal)
+						{
+							std::cout << "hewo" << std::endl;
+						}
+
 					} //End if
 					if (mychild->marked() == false) //If (notMarked(child))
 					{
@@ -435,7 +462,6 @@ void Grid::aStar(Cell* start, Cell* dest)
 						mychild->setMarked(true); //Mark Child
 
 					} //end if
-
 				}
 
 			}//end for
@@ -461,7 +487,9 @@ void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 	for (int index = 0; index < numberOfNonTraversals; index++)
 	{
 		t_window.draw(m_notTraversal[index]);
+		t_window.draw(m_pathTaken[index]);
 	}
+
 	for (int index = 0; index < 2500; index++)
 	{
 		m_cellsArray.at(index).render(t_window);

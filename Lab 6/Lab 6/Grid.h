@@ -65,6 +65,7 @@ public:
 	sf::Font m_fonts;
 	void addCost(int m_cost);
 	bool m_showCost = false;
+	int getCost();
 
 	sf::RectangleShape m_shape;
 
@@ -78,6 +79,8 @@ public:
 	~Grid();
 	int numberOfNonTraversals = 200;
 	sf::RectangleShape m_notTraversal[200];
+	sf::RectangleShape m_pathTaken[200];
+	std::vector<int> m_pathFound;
 	Cell& returnCell(int t_id);
 
 	bool isStartPosSelected;
@@ -88,13 +91,14 @@ public:
 	void reset();
 	void initialiseMap();
 	void update(sf::RenderWindow& t_window);
-	void makeStartPos(sf::RenderWindow& t_window);
-	void makeEndPos(sf::RenderWindow& t_window);
+	int makeStartPos(sf::RenderWindow& t_window);
+	int makeEndPos(sf::RenderWindow& t_window);
 	void makeCost();
 	void verticalCells(int t_point, int t_row, int t_cost);
 	void horizontalCells(int t_point, int t_col, int t_cost);
 	void setCost(int t_p, int t_col, int t_cal, int t_cost);
 	void notTraversalsCost();
+	void callAstar(int t_start, int t_end);
 	void render(sf::RenderWindow& t_window);
 	void aStar(Cell* start, Cell* dest);
 	Cell* findCellPoint(sf::Vector2f point);
