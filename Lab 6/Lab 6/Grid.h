@@ -72,6 +72,9 @@ public:
 	sf::RectangleShape m_shape;
 
 	std::vector<int> m_neighbours;
+	
+	sf::VertexArray m_vertex;
+	
 
 };
 
@@ -82,6 +85,8 @@ public:
 	int numberOfNonTraversals = 200;
 	sf::RectangleShape m_notTraversal[200];
 	sf::RectangleShape m_pathShape[200];
+
+	sf::VertexArray m_vertex;
 
 	std::vector<int> m_pathFound;
 	Cell& returnCell(int t_id);
@@ -104,6 +109,9 @@ public:
 	void render(sf::RenderWindow& t_window);
 	void aStar(Cell* start, Cell* dest);
 	void generateHeatMap();
+	void generateVertexArrays(Cell* t_endpoint);
+	void setVectorDistance(sf::Vector2f t_goalPosition);
+	void resetPoints();
 
 	int makeStartPos(sf::RenderWindow& t_window);
 	int makeEndPos(sf::RenderWindow& t_window);

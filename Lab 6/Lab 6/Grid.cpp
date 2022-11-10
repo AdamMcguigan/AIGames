@@ -31,6 +31,12 @@ Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 	m_shape.setPosition(t_position);
 	m_isPassable = true;
 	m_previousCellId = -1;
+
+	sf::VertexArray v(sf::Lines, 2);
+
+	v[0].color = sf::Color::White;
+	v[1].color = sf::Color::White;
+	m_vertex = v;
 }
 
 Cell* Cell::previous() const
@@ -68,8 +74,6 @@ void Cell::render(sf::RenderWindow& t_window, bool t_cpress)
 void Cell::addCost(int m_cost)
 {
 	myCost = m_cost;
-	//	std::cout << m_cost << std::endl;
-
 
 	if (myCost != -1)
 	{
@@ -106,8 +110,12 @@ void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
 
 Grid::Grid()
 {
-
 	initialiseMap();
+
+	sf::VertexArray v(sf::Lines, 2);
+	v[0].color = sf::Color::White;
+	v[1].color = sf::Color::White;
+	m_vertex = v;
 
 }
 
@@ -220,6 +228,12 @@ void Grid::update(sf::RenderWindow& t_window) // update method
 {
 	makeStartPos(t_window);
 	makeEndPos(t_window);
+
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+	{
+		resetPoints();
+		
+	}
 }
 
 int Grid::makeStartPos(sf::RenderWindow& t_window)
@@ -389,6 +403,32 @@ void Grid::generateHeatMap()
 	}
 }
 
+void Grid::generateVertexArrays(Cell* t_endpoint)
+{
+	/*for (int i = 0; i < 2500; i++)
+	{
+		m_cellsArray.at(i).setVectorDistance(t_endpoint->getRect().getPosition());
+
+	}*/
+}
+
+void Grid::resetPoints()
+{
+	isStartPosSelected = false;
+	isEndPosSelected = false;
+	for (int i = 0; i < 200; i++)
+	{
+		m_pathShape[i].setPosition(0, 0);
+		m_cellsArray.at(i).myPath = false;
+	}
+	
+	makeCost();
+	notTraversalsCost();
+	generateHeatMap();
+}
+
+
+
 void Grid::callAstar(int t_start, int t_end)
 {
 	Cell* start;
@@ -420,7 +460,6 @@ std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 
 
 //A Star Algorithm
-
 void Grid::aStar(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
@@ -529,3 +568,4 @@ void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 	}
 
 }
+
