@@ -261,7 +261,7 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 				}
 				makeCost();
 				notTraversalsCost();
-				callAstar(startPointId, endPointId);
+				callFlowField(startPointId, endPointId);
 				generateHeatMap();
 				return endPointId;
 			}
@@ -365,13 +365,13 @@ void Grid::notTraversalsCost()
 	}
 }
 
-void Grid::callAstar(int t_start, int t_end)
+void Grid::callFlowField(int t_start, int t_end)
 {
 	Cell* start;
 	Cell* end;
 	start = &returnCell(t_start);
 	end = &returnCell(t_end);
-	aStar(start, end);
+	FlowField(start, end);
 	int i = 0;
 	int index = end->m_id;
 	m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
@@ -380,10 +380,9 @@ void Grid::callAstar(int t_start, int t_end)
 		m_pathFound.push_back(index);
 		while (m_cellsArray.at(index).m_previous != nullptr)
 		{
-			//std::cout << m_cellsArray.at(index).m_previous->m_id << std::endl;
-
 			m_pathFound.push_back(m_cellsArray.at(index).m_previous->m_id);
 			m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
+			m_cellsArray.at(i).myPath = true;
 			index = m_cellsArray.at(index).m_previous->m_id;
 			i++;
 		}
@@ -398,7 +397,7 @@ std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 
 
 //A Star Algorithm - 3rd Year Adapted for flow field.
-void Grid::aStar(Cell* start, Cell* dest)
+void Grid::FlowField(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
 	Cell* goal = dest; //g goal node
@@ -497,14 +496,18 @@ void Grid::generateHeatMap()
 
 	for (int i = 0; i < 2500; i++)
 	{
-		if (m_cellsArray.at(i).m_isPassable == true)
+		if (m_cellsArray.at(i).myPath == true)
 		{
-			sf::Vector3f colorValue = { 0.0f,0.0f,30.0f + (m_cellsArray.at(i).myCost * 3) };
-			if (colorValue.z < 50)
+			if (m_cellsArray.at(i).m_isPassable == true)
 			{
-				colorValue.z = 50;
+				sf::Vector3f colorValue = { 0.0f,0.0f,30.0f + (m_cellsArray.at(i).myCost * 3) };
+				if (colorValue.z < 50)
+				{
+					colorValue.z = 50;
+				}
+				m_cellsArray.at(i).setColor(colorValue);
 			}
-			m_cellsArray.at(i).setColor(colorValue);
+
 		}
 	}
 }
