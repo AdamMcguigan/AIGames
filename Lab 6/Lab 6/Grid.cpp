@@ -22,11 +22,15 @@ Cell::~Cell()
 
 Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 {
+	//if (!m_fonts.loadFromFile("Assets/Fonts/Pixellari.ttf"))
+	//{
+	//	std::cout << "error with font file file";
+	//}
 	m_cellcost.setFont(t_font);
 	m_id = t_cellID;
 	m_shape.setSize(sf::Vector2f(900 / 50, 900 / 50));
 	m_shape.setFillColor(sf::Color::Transparent);
-	m_shape.setOutlineColor(sf::Color::White);
+	m_shape.setOutlineColor(sf::Color{ 245, 66, 203 });
 	m_shape.setOutlineThickness(1);
 	m_shape.setPosition(t_position);
 	m_isPassable = true;
@@ -53,18 +57,22 @@ void Cell::setMarked(bool t_marked) //bool that is checking if the cell is marke
 	m_marked = t_marked;
 }
 
-void Cell::render(sf::RenderWindow& t_window)
+void Cell::render(sf::RenderWindow& t_window, bool t_cpress)
 {
 	t_window.draw(m_shape);
 	if (drawCost == true)
 	{
-		t_window.draw(m_cellcost);
+		if (t_cpress == true)
+		{
+			t_window.draw(m_cellcost);
+		}
 	}
 }
 
 void Cell::addCost(int m_cost)
 {
 	myCost = m_cost;
+	//	std::cout << m_cost << std::endl;
 
 
 	if (myCost != -1)
@@ -86,11 +94,6 @@ int Cell::getCost()
 	return myCost;
 }
 
-void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
-{
-	m_neighbours.push_back(t_cellID);
-}
-
 void Cell::setColor(sf::Vector3f t_RGBValue)
 {
 	sf::Uint8 red = t_RGBValue.x;
@@ -99,9 +102,15 @@ void Cell::setColor(sf::Vector3f t_RGBValue)
 	m_shape.setFillColor(sf::Color{ red, green ,blue });
 }
 
+void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
+{
+	m_neighbours.push_back(t_cellID);
+}
+
 
 Grid::Grid()
 {
+
 	initialiseMap();
 
 }
@@ -180,28 +189,27 @@ void Grid::initialiseMap()
 			}
 
 			count++;
-	
 			m_cellsArray.push_back(cell);// pushing back the cell
 		}
 	}
 	int p = 0;
 
 
-	for (int index = 0; index < numberOfNonTraversals; index++)
+	for (int index = 0; index < numberOfNonTraversals; index++) //OBSTACLES HERE <-----
 	{
 		randomCellId = rand() % 2500;
 		m_notTraversal[index].setSize(sf::Vector2f(18.0f, 18.0f));
-		m_notTraversal[index].setFillColor(sf::Color::Cyan); //color of obstacles
+		m_notTraversal[index].setFillColor(sf::Color::Red);
 
-		m_pathTaken[index].setSize(sf::Vector2f(18.0f, 18.0f));
-		m_pathTaken[index].setFillColor(sf::Color::Yellow);
+		m_pathShape[index].setSize(sf::Vector2f(18.0f, 18.0f)); 
+		m_pathShape[index].setFillColor(sf::Color::Yellow);
 
 		m_notTraversal[index].setPosition((m_cellsArray.at(randomCellId).m_shape.getPosition()));
 		m_cellsArray.at(randomCellId).setMarked(true);
 	}
 
 
-	for (int i = 0; i < 2500; i++) // 40 * 40 = 1600
+	for (int i = 0; i < 2500; i++) // 50 * 50 = 2500
 	{
 		int posY = i / 50;
 		int posX = i % 50;
@@ -238,7 +246,6 @@ int Grid::makeStartPos(sf::RenderWindow& t_window)
 		}
 	}
 }
-
 int Grid::makeEndPos(sf::RenderWindow& t_window)
 {
 	if (isEndPosSelected == false)
@@ -251,17 +258,17 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 			id += xPos;
 			if (m_cellsArray.at(id).marked() == false)
 			{
-				m_cellsArray.at(id).m_shape.setFillColor(sf::Color::Red);
+
 				isEndPosSelected = true;
 				endPointId = id;
-				for (int i = 0; i < 2500; i++) // 40 * 40 = 1600
+				for (int i = 0; i < 2500; i++) // 50 * 50 = 2500
 				{
 					m_cellsArray[i].drawCost = true;
 					m_cellsArray[i].m_isPassable = true;
 				}
 				makeCost();
 				notTraversalsCost();
-				callFlowField(startPointId, endPointId);
+				callAstar(startPointId, endPointId);
 				generateHeatMap();
 				return endPointId;
 			}
@@ -356,38 +363,55 @@ void Grid::notTraversalsCost()
 	{
 		if (m_cellsArray[i].marked() == true) {
 
-			m_cellsArray[i].addCost(10000); //Making sure we dont go through wall obstacles
+			m_cellsArray[i].addCost(10000);
 			m_cellsArray[i].drawCost = false;
 			m_cellsArray[i].m_isPassable = false;
-			m_cellsArray[i].m_shape.setFillColor(sf::Color::Cyan);
-		}
 
+		}
 	}
 }
 
-void Grid::callFlowField(int t_start, int t_end)
+void Grid::generateHeatMap()
+{
+	for (int i = 0; i < 2500; i++)
+	{
+		if (m_cellsArray.at(i).m_isPassable == true)
+		{
+			if (m_cellsArray.at(i).myPath == false)
+			{
+				sf::Vector3f colourValue = { 0.0f ,0.0f,30.0f + (m_cellsArray.at(i).myCost * 5) };
+				if (colourValue.z > 100)
+				{
+					colourValue.z = 100;
+				}
+				m_cellsArray.at(i).setColor(colourValue);
+			}
+		}
+	}
+}
+
+void Grid::callAstar(int t_start, int t_end)
 {
 	Cell* start;
 	Cell* end;
 	start = &returnCell(t_start);
 	end = &returnCell(t_end);
-	FlowField(start, end);
+	aStar(start, end);
 	int i = 0;
 	int index = end->m_id;
-	m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
+	m_pathShape[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
 	if (m_pathFound.empty() == true)
 	{
 		m_pathFound.push_back(index);
 		while (m_cellsArray.at(index).m_previous != nullptr)
 		{
 			m_pathFound.push_back(m_cellsArray.at(index).m_previous->m_id);
-			m_pathTaken[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
-			m_cellsArray.at(i).myPath = true;
+			m_pathShape[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
+			m_cellsArray.at(index).myPath = true;
 			index = m_cellsArray.at(index).m_previous->m_id;
 			i++;
 		}
 	}
-
 }
 
 std::vector<Cell>& Grid::returnAllCells() // returning all the cells
@@ -396,8 +420,9 @@ std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 }
 
 
-//A Star Algorithm - 3rd Year Adapted for flow field.
-void Grid::FlowField(Cell* start, Cell* dest)
+//A Star Algorithm
+
+void Grid::aStar(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
 	Cell* goal = dest; //g goal node
@@ -456,7 +481,7 @@ void Grid::FlowField(Cell* start, Cell* dest)
 
 						if (mychild == goal)
 						{
-							std::cout << "We found the goal Brother " << std::endl;
+							std::cout << "hewo" << std::endl;
 						}
 
 					} //End if
@@ -490,39 +515,16 @@ Cell* Grid::findCellPoint(sf::Vector2f point)
 	return nullptr;
 }
 
-void Grid::generateHeatMap()
-{
-	float redColourValue = 255.0f;
-
-	for (int i = 0; i < 2500; i++)
-	{
-		if (m_cellsArray.at(i).myPath == true)
-		{
-			if (m_cellsArray.at(i).m_isPassable == true)
-			{
-				sf::Vector3f colorValue = { 0.0f,0.0f,30.0f + (m_cellsArray.at(i).myCost * 3) };
-				if (colorValue.z < 50)
-				{
-					colorValue.z = 50;
-				}
-				m_cellsArray.at(i).setColor(colorValue);
-			}
-
-		}
-	}
-}
-
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 {
 	for (int index = 0; index < numberOfNonTraversals; index++)
 	{
 		t_window.draw(m_notTraversal[index]);
-		t_window.draw(m_pathTaken[index]);
+		t_window.draw(m_pathShape[index]);
 	}
-
 	for (int index = 0; index < 2500; index++)
 	{
-		m_cellsArray.at(index).render(t_window);
+		m_cellsArray.at(index).render(t_window, buttonPressed);
 		//t_window.draw(m_cellsArray.at(index).m_cellcost);
 		//t_window.draw(m_cellId[index]);
 	}

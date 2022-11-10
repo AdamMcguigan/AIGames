@@ -45,7 +45,20 @@ void Game::processEvents()
 		{
 			m_exitGame = true;
 		}
+		if (sf::Event::KeyPressed == newEvent.type)
+		{
+			processKeys(newEvent);
+		}
 		
+	}
+}
+
+void Game::processKeys(sf::Event t_event)
+{
+	if (sf::Keyboard::C == t_event.key.code)
+	{
+		m_grid.buttonPressed ^= true;
+
 	}
 }
 

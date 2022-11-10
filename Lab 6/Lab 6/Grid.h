@@ -28,49 +28,47 @@ public:
 	~Cell();
 	int m_id = 0;
 	int m_previousCellId{ -1 };
-	bool m_marked = false;
-	bool m_isPassable = true;
-	bool m_isPuddle = false;
-	bool m_isWall = false;
-
 	int m_centreX = 0;
 	int m_centreY = 0;
 
-	float m_h;
-	int m_pathCost = -1;
 	int myCost = -1;
+	int m_pathCost = -1;
 
+	float m_h;
 
+	bool m_marked = false;
+	bool m_isPassable = true;
 	bool drawCost = false;
+
 	std::vector<int> m_diagonalList;
 
 	Cell* m_previous;
 
 	Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font);
 	Cell* previous() const;
+
 	int weight() const;
+
+	bool marked() const;
 	void setPrevious(Cell* previous)
 	{
 		m_previous = previous;
 	}
-	bool marked() const;
 	void setMarked(bool t_marked);
 	void addNeighbour(int t_cellID);
 	int returnID() const {
 		return m_id;
 	}
-	void render(sf::RenderWindow& t_window);
+	void render(sf::RenderWindow& t_window, bool t_cpress);
 
 	sf::Text m_cellcost;
 	sf::Font m_fonts;
 	void addCost(int m_cost);
 	bool m_showCost = false;
-	int getCost();
-
-	void setColor(sf::Vector3f t_RGBValue);
-
 	bool myPath = false;
 
+	int getCost();
+	void setColor(sf::Vector3f t_RGBValue);
 	sf::RectangleShape m_shape;
 
 	std::vector<int> m_neighbours;
@@ -83,30 +81,33 @@ public:
 	~Grid();
 	int numberOfNonTraversals = 200;
 	sf::RectangleShape m_notTraversal[200];
-	sf::RectangleShape m_pathTaken[200];
+	sf::RectangleShape m_pathShape[200];
+
 	std::vector<int> m_pathFound;
 	Cell& returnCell(int t_id);
-
+	bool buttonPressed = false;
 	bool isStartPosSelected;
 	bool isEndPosSelected;
+
 	int endPointId;
 	int startPointId;
 	void neighbours(int t_row, int t_col, std::vector<Cell>& t_cells, int t_current);
 	void reset();
 	void initialiseMap();
 	void update(sf::RenderWindow& t_window);
-	int makeStartPos(sf::RenderWindow& t_window);
-	int makeEndPos(sf::RenderWindow& t_window);
 	void makeCost();
 	void verticalCells(int t_point, int t_row, int t_cost);
 	void horizontalCells(int t_point, int t_col, int t_cost);
 	void setCost(int t_p, int t_col, int t_cal, int t_cost);
 	void notTraversalsCost();
-	void callFlowField(int t_start, int t_end);
+	void callAstar(int t_start, int t_end);
 	void render(sf::RenderWindow& t_window);
-	void FlowField(Cell* start, Cell* dest);
-	Cell* findCellPoint(sf::Vector2f point);
+	void aStar(Cell* start, Cell* dest);
 	void generateHeatMap();
+
+	int makeStartPos(sf::RenderWindow& t_window);
+	int makeEndPos(sf::RenderWindow& t_window);
+	Cell* findCellPoint(sf::Vector2f point);
 
 	std::vector<Cell>& returnAllCells();
 
@@ -114,7 +115,6 @@ public:
 	sf::Font m_font;
 	std::vector<std::vector<Cell>> m_cellsVectorArray;
 	std::vector<Cell> m_cellsArray;
-
 
 	int m_maxRows = 50;
 	int m_maxCols = 50;
