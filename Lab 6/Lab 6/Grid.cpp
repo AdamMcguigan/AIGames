@@ -378,7 +378,7 @@ void Grid::generateHeatMap()
 		{
 			if (m_cellsArray.at(i).myPath == false)
 			{
-				sf::Vector3f colourValue = { RedColorVal - (m_cellsArray.at(i).getCost() * 8),0.0f,0.0f }; //{ 0.0f ,0.0f, 50.0f + (m_cellsArray.at(i).myCost * 8) };
+				sf::Vector3f colourValue = { RedColorVal - (m_cellsArray.at(i).getCost() * 8),0.0f,0.0f };
 				if (colourValue.x < 100)
 				{
 					colourValue.x = 100;
@@ -516,16 +516,16 @@ Cell* Grid::findCellPoint(sf::Vector2f point)
 
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 {
-	for (int index = 0; index < numberOfNonTraversals; index++)
-	{
-		t_window.draw(m_notTraversal[index]);
-		t_window.draw(m_pathShape[index]);
-	}
 	for (int index = 0; index < 2500; index++)
 	{
 		m_cellsArray.at(index).render(t_window, buttonPressed);
 		//t_window.draw(m_cellsArray.at(index).m_cellcost);
 		//t_window.draw(m_cellId[index]);
+	}
+	for (int index = 0; index < numberOfNonTraversals; index++)
+	{
+		t_window.draw(m_notTraversal[index]);
+		t_window.draw(m_pathShape[index]);
 	}
 
 }
