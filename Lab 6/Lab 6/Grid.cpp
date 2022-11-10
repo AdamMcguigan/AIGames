@@ -91,6 +91,14 @@ void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
 	m_neighbours.push_back(t_cellID);
 }
 
+void Cell::setColor(sf::Vector3f t_RGBValue)
+{
+	sf::Uint8 red = t_RGBValue.x;
+	sf::Uint8 green = t_RGBValue.y;
+	sf::Uint8 blue = t_RGBValue.z;
+	m_shape.setFillColor(sf::Color{ red, green ,blue });
+}
+
 
 Grid::Grid()
 {
@@ -254,6 +262,7 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 				makeCost();
 				notTraversalsCost();
 				callAstar(startPointId, endPointId);
+				generateHeatMap();
 				return endPointId;
 			}
 		}
@@ -448,7 +457,7 @@ void Grid::aStar(Cell* start, Cell* dest)
 
 						if (mychild == goal)
 						{
-							std::cout << "hewo" << std::endl;
+							std::cout << "We found the goal Brother " << std::endl;
 						}
 
 					} //End if
@@ -480,6 +489,24 @@ Cell* Grid::findCellPoint(sf::Vector2f point)
 		}
 	}
 	return nullptr;
+}
+
+void Grid::generateHeatMap()
+{
+	float redColourValue = 255.0f;
+
+	for (int i = 0; i < 2500; i++)
+	{
+		if (m_cellsArray.at(i).m_isPassable == true)
+		{
+			sf::Vector3f colorValue = { 0.0f,0.0f,30.0f + (m_cellsArray.at(i).myCost * 3) };
+			if (colorValue.z < 50)
+			{
+				colorValue.z = 50;
+			}
+			m_cellsArray.at(i).setColor(colorValue);
+		}
+	}
 }
 
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid

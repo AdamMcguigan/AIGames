@@ -67,6 +67,8 @@ public:
 	bool m_showCost = false;
 	int getCost();
 
+	void setColor(sf::Vector3f t_RGBValue);
+
 	sf::RectangleShape m_shape;
 
 	std::vector<int> m_neighbours;
@@ -102,6 +104,7 @@ public:
 	void render(sf::RenderWindow& t_window);
 	void aStar(Cell* start, Cell* dest);
 	Cell* findCellPoint(sf::Vector2f point);
+	void generateHeatMap();
 
 	std::vector<Cell>& returnAllCells();
 
