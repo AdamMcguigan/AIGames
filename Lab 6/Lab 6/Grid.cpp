@@ -22,10 +22,6 @@ Cell::~Cell()
 
 Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 {
-	//if (!m_fonts.loadFromFile("Assets/Fonts/Pixellari.ttf"))
-	//{
-	//	std::cout << "error with font file file";
-	//}
 	m_cellcost.setFont(t_font);
 	m_id = t_cellID;
 	m_shape.setSize(sf::Vector2f(900 / 50, 900 / 50));
@@ -256,9 +252,9 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 			int xPos = translated_pos.x / 18; int yPos = translated_pos.y / 18;
 			float id = yPos * 50;
 			id += xPos;
+
 			if (m_cellsArray.at(id).marked() == false)
 			{
-
 				isEndPosSelected = true;
 				endPointId = id;
 				for (int i = 0; i < 2500; i++) // 50 * 50 = 2500
@@ -266,10 +262,11 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 					m_cellsArray[i].drawCost = true;
 					m_cellsArray[i].m_isPassable = true;
 				}
+
 				makeCost();
 				notTraversalsCost();
-				callAstar(startPointId, endPointId);
 				generateHeatMap();
+				callAstar(startPointId, endPointId); //Flipped for the heatmap
 				return endPointId;
 			}
 		}
@@ -373,16 +370,18 @@ void Grid::notTraversalsCost()
 
 void Grid::generateHeatMap()
 {
+	float RedColorVal = 255;
+
 	for (int i = 0; i < 2500; i++)
 	{
 		if (m_cellsArray.at(i).m_isPassable == true)
 		{
 			if (m_cellsArray.at(i).myPath == false)
 			{
-				sf::Vector3f colourValue = { 0.0f ,0.0f,30.0f + (m_cellsArray.at(i).myCost * 5) };
-				if (colourValue.z > 100)
+				sf::Vector3f colourValue = { RedColorVal - (m_cellsArray.at(i).getCost() * 8),0.0f,0.0f }; //{ 0.0f ,0.0f, 50.0f + (m_cellsArray.at(i).myCost * 8) };
+				if (colourValue.x < 100)
 				{
-					colourValue.z = 100;
+					colourValue.x = 100;
 				}
 				m_cellsArray.at(i).setColor(colourValue);
 			}
