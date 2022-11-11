@@ -24,6 +24,8 @@ Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 {
 	m_cellcost.setFont(t_font);
 	m_id = t_cellID;
+
+
 	m_shape.setSize(sf::Vector2f(900 / 50, 900 / 50));
 	m_shape.setFillColor(sf::Color::Transparent);
 	m_shape.setOutlineColor(sf::Color{ 245, 66, 203 });
@@ -32,11 +34,10 @@ Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 	m_isPassable = true;
 	m_previousCellId = -1;
 
-	sf::VertexArray v(sf::Lines, 2);
+	vectorLine.setSize(sf::Vector2f(2.0f,10.0f));
+	vectorLine.setFillColor(sf::Color::White);
+	vectorLine.setPosition(t_position.x + 8, t_position.y + 5);
 
-	v[0].color = sf::Color::White;
-	v[1].color = sf::Color::White;
-	m_vertex = v;
 }
 
 Cell* Cell::previous() const
@@ -69,6 +70,7 @@ void Cell::render(sf::RenderWindow& t_window, bool t_cpress)
 			t_window.draw(m_cellcost);
 		}
 	}
+	t_window.draw(vectorLine);
 }
 
 void Cell::addCost(int m_cost)
@@ -111,12 +113,6 @@ void Cell::addNeighbour(int t_cellID) // adding a cell id to the neighbours
 Grid::Grid()
 {
 	initialiseMap();
-
-	sf::VertexArray v(sf::Lines, 2);
-	v[0].color = sf::Color::White;
-	v[1].color = sf::Color::White;
-	m_vertex = v;
-
 }
 
 Grid::~Grid()
@@ -273,8 +269,16 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 				endPointId = id;
 				for (int i = 0; i < 2500; i++) // 50 * 50 = 2500
 				{
+					//Vector Lines
+					sf::Vector2f TheActualEndPos = findEndPos(endPointId);
+					float dX = m_cellsArray.at(i).m_shape.getPosition().x - TheActualEndPos.x;
+					float dY = m_cellsArray.at(i).m_shape.getPosition().y - TheActualEndPos.y;
+
+					float rotation = (-atan2(dX, dY) * 180 / 3.14159);
+
 					m_cellsArray[i].drawCost = true;
 					m_cellsArray[i].m_isPassable = true;
+					m_cellsArray[i].vectorLine.setRotation(rotation);
 				}
 
 				makeCost();
@@ -519,7 +523,7 @@ void Grid::aStar(Cell* start, Cell* dest)
 
 						if (mychild == goal)
 						{
-							std::cout << "hewo" << std::endl;
+							std::cout << "Found the Goal Brother" << std::endl;
 						}
 
 					} //End if
@@ -551,6 +555,15 @@ Cell* Grid::findCellPoint(sf::Vector2f point)
 		}
 	}
 	return nullptr;
+}
+
+sf::Vector2f Grid::findEndPos(int t_Id)
+{
+	for (int i = 0; i < m_cellsArray.size(); i++)
+	{
+		return m_cellsArray.at(t_Id).m_shape.getPosition();
+
+	}
 }
 
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid

@@ -1,53 +1,56 @@
 ﻿  Grid.cpp
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(99,16): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(101,16): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(100,18): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(102,18): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(101,17): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(103,17): warning C4244: 'initializing': conversion from 'T' to 'sf::Uint8', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(161,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(171,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(222,19): warning C4834: discarding return value of function with 'nodiscard' attribute
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(246,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(157,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(167,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(218,19): warning C4834: discarding return value of function with 'nodiscard' attribute
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(242,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(246,47): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(242,47): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(247,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(249,24): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(251,21): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(253,20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(266,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(243,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(245,24): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(247,21): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(249,20): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(262,13): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(266,47): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(262,47): warning C4244: 'initializing': conversion from 'T' to 'int', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(267,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(270,24): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(273,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(472,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(510,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(516,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(546,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(258): warning C4715: 'Grid::makeStartPos': not all control paths return a value
-C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Lab 6\Grid.cpp(288): warning C4715: 'Grid::makeEndPos': not all control paths return a value
-  Lab 6.vcxproj -> C:\Users\adamm\Desktop\AI Final\AIGames\Lab 6\Debug\Lab 6.exe
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(263,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(266,24): warning C4244: 'argument': conversion from 'float' to 'const unsigned int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(269,18): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(277,21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(476,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(514,35): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(520,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(550,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(562,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(254): warning C4715: 'Grid::makeStartPos': not all control paths return a value
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(292): warning C4715: 'Grid::makeEndPos': not all control paths return a value
+C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Lab 6\Grid.cpp(567): warning C4715: 'Grid::findEndPos': not all control paths return a value
+  Lab 6.vcxproj -> C:\Users\gameuser\Desktop\Ai Final\AIGames\Lab 6\Debug\Lab 6.exe
