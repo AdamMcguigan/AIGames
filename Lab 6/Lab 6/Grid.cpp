@@ -295,7 +295,7 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 				notTraversalsCost();
 				generateHeatMap();
 				clearPath();
-				callAstar(startPointId, endPointId); //Flipped for the heatmap
+				callAdaptedAstar(startPointId, endPointId); //Flipped for the heatmap
 				markPath();
 				return endPointId;
 			}
@@ -453,13 +453,13 @@ void Grid::resetPoints()
 
 
 
-void Grid::callAstar(int t_start, int t_end)
+void Grid::callAdaptedAstar(int t_start, int t_end)
 {
 	Cell* start;
 	Cell* end;
 	start = &returnCell(t_start);
 	end = &returnCell(t_end);
-	aStar(start, end);
+	AdaptedAstar(start, end);
 	int i = 0;
 	int index = end->m_id;
 	m_pathShape[i].setPosition(m_cellsArray.at(index).m_shape.getPosition());
@@ -484,7 +484,7 @@ std::vector<Cell>& Grid::returnAllCells() // returning all the cells
 
 
 //A Star Algorithm
-void Grid::aStar(Cell* start, Cell* dest)
+void Grid::AdaptedAstar(Cell* start, Cell* dest)
 {
 	Cell* s = start; // s start node
 	Cell* goal = dest; //g goal node
@@ -543,7 +543,7 @@ void Grid::aStar(Cell* start, Cell* dest)
 
 						if (mychild == goal)
 						{
-							std::cout << "hewo" << std::endl;
+							std::cout << "Found the goal broski" << std::endl;
 						}
 
 					} //End if

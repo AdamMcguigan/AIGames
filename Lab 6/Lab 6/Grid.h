@@ -107,11 +107,12 @@ public:
 	void horizontalCells(int t_point, int t_col, int t_cost);
 	void setCost(int t_p, int t_col, int t_cal, int t_cost);
 	void notTraversalsCost();
-	void callAstar(int t_start, int t_end);
+	void callAdaptedAstar(int t_start, int t_end);
 	void render(sf::RenderWindow& t_window);
-	void aStar(Cell* start, Cell* dest);
+	void AdaptedAstar(Cell* start, Cell* dest);
 	void generateHeatMap();
 	void resetPoints();
+	void markPath();
 
 	int makeStartPos(sf::RenderWindow& t_window);
 	int makeEndPos(sf::RenderWindow& t_window);
@@ -132,10 +133,6 @@ public:
 	int m_currentCol;
 	int randomCellId = 0;
 
-
-
-
-	void markPath();
 
 private:
 
