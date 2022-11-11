@@ -6,7 +6,10 @@ Game::Game() :
 	m_window{ sf::VideoMode{ 900, 900,  sf::VideoMode::getDesktopMode().bitsPerPixel }, "AILab6" },
 	m_exitGame{ false } //when true game will exit
 {
-
+	std::cout << "Left Click = Start Pos " << std::endl;
+	std::cout << "Right Click = End Pos " << std::endl;
+	std::cout << "Press C = Add the Cost Field " << std::endl;
+	std::cout << "When you do the right click the heatmap will show " << std::endl;
 }
 
 
@@ -59,7 +62,9 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_grid.buttonPressed ^= true;
 
+
 	}
+
 }
 
 void Game::update(sf::Time t_deltaTime)
@@ -70,6 +75,8 @@ void Game::update(sf::Time t_deltaTime)
 	}
 	mousePosition = sf::Mouse::getPosition(m_window);
 	m_grid.update(m_window);
+
+	
 }
 
 void Game::render()

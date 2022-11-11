@@ -74,7 +74,8 @@ public:
 	std::vector<int> m_neighbours;
 	
 	sf::VertexArray m_vertex;
-	sf::RectangleShape vectorLine;
+
+	sf::RectangleShape vectorLines;
 	
 
 };
@@ -110,13 +111,13 @@ public:
 	void render(sf::RenderWindow& t_window);
 	void aStar(Cell* start, Cell* dest);
 	void generateHeatMap();
-	void generateVertexArrays(Cell* t_endpoint);
 	void resetPoints();
 
 	int makeStartPos(sf::RenderWindow& t_window);
 	int makeEndPos(sf::RenderWindow& t_window);
+	void clearPath();
 	Cell* findCellPoint(sf::Vector2f point);
-	sf::Vector2f findEndPos(int t_Id);
+	sf::Vector2f FindEndPos(int t_Id);
 
 	std::vector<Cell>& returnAllCells();
 
@@ -130,6 +131,11 @@ public:
 	int m_currentRow;
 	int m_currentCol;
 	int randomCellId = 0;
+
+
+
+
+	void markPath();
 
 private:
 
