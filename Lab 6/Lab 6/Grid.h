@@ -127,6 +127,13 @@ public:
 	std::vector<std::vector<Cell>> m_cellsVectorArray;
 	std::vector<Cell> m_cellsArray;
 
+	sf::CircleShape player;
+
+	void movePlayer(std::stack<Cell*> t_path);
+	bool canPlayerMove;
+	std::stack<Cell*> playerPath;
+	int m = 1;
+
 	int m_maxRows = 50;
 	int m_maxCols = 50;
 	int m_currentRow;

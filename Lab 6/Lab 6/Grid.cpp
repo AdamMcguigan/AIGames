@@ -35,6 +35,8 @@ Cell::Cell(sf::Vector2f t_position, int t_cellID, sf::Font& t_font)
 	vectorLines.setSize(sf::Vector2f(2.0f, 10.0f));
 	vectorLines.setFillColor(sf::Color::White);
 	vectorLines.setPosition(t_position.x + 8, t_position.y + 5);
+
+
 }
 
 Cell* Cell::previous() const
@@ -111,11 +113,6 @@ Grid::Grid()
 {
 	initialiseMap();
 
-	sf::VertexArray v(sf::Lines, 2);
-	v[0].color = sf::Color::White;
-	v[1].color = sf::Color::White;
-	m_vertex = v;
-
 }
 
 Grid::~Grid()
@@ -175,6 +172,9 @@ void Grid::initialiseMap()
 
 	}
 
+	player.setFillColor(sf::Color::White);
+	player.setRadius(10.0f);
+
 	sf::Vector2f cellPositions{ 0,0 };
 	int count = 0;
 	for (int row = 0; row < m_maxRows; row++)
@@ -231,6 +231,14 @@ void Grid::update(sf::RenderWindow& t_window) // update method
 	{
 		resetPoints();
 		
+	}
+
+	if (canPlayerMove == true)
+	{
+		if (player.getPosition() != m_cellsArray.at(endPointId).m_shape.getPosition())
+		{
+			movePlayer(playerPath);
+		}
 	}
 }
 
@@ -296,6 +304,7 @@ int Grid::makeEndPos(sf::RenderWindow& t_window)
 				generateHeatMap();
 				clearPath();
 				callAdaptedAstar(startPointId, endPointId); //Flipped for the heatmap
+				player.setPosition(playerPath.top()->m_shape.getPosition());
 				markPath();
 				return endPointId;
 			}
@@ -501,8 +510,6 @@ void Grid::AdaptedAstar(Cell* start, Cell* dest)
 		int xTwo = goal->m_centreX;
 		int yTwo = goal->m_centreY;
 
-		//m_cellsArray[i].m_h = abs(xTwo - xOne) + abs(yTwo - yOne);  //Calculate h[v]
-
 		m_cellsArray[i].myCost = dist / 10;  //Initialise g[v] to infinity
 		m_cellsArray[i].setPrevious(nullptr);
 		m_cellsArray[i].setMarked(false);
@@ -539,11 +546,11 @@ void Grid::AdaptedAstar(Cell* start, Cell* dest)
 					{
 						mychild->myCost = distToChild; //let f[child] = distToChild
 						mychild->setPrevious(pq.top()); //Set previous pointer of child to pq.top()
-						//mychild->m_shape.setFillColor(sf::Color::Red);						//uncomment to see how it expands
+							//mychild->m_shape.setFillColor(sf::Color::Red);						//uncomment to see how it expands
 
 						if (mychild == goal)
 						{
-							std::cout << "Found the goal broski" << std::endl;
+							std::cout << "hewo" << std::endl;
 						}
 
 					} //End if
@@ -557,6 +564,19 @@ void Grid::AdaptedAstar(Cell* start, Cell* dest)
 						mychild->setMarked(true); //Mark Child
 
 					} //end if
+					Cell* pathNode = goal;
+					Cell* pathNode2 = goal;
+					while (pathNode->previous() != nullptr)
+					{
+						playerPath.push(pathNode);
+						pathNode = pathNode->previous();
+						sf::Vector3f colourValue = { 200.0f,255.0f,0.0f };
+						pathNode->setColor(colourValue);
+					}
+
+					
+					canPlayerMove = true;
+
 				}
 
 			}//end for
@@ -586,6 +606,30 @@ sf::Vector2f Grid::FindEndPos(int t_Id)
 	}
 }
 
+void Grid::movePlayer(std::stack<Cell*> t_path)
+{
+	if (player.getPosition().x > t_path.top()->m_shape.getPosition().x)
+	{
+		player.move(-1, 0);
+	}
+	if (player.getPosition().x < t_path.top()->m_shape.getPosition().x)
+	{
+		player.move(1, 0);
+	}
+	if (player.getPosition().y > t_path.top()->m_shape.getPosition().y)
+	{
+		player.move(0, -1);
+	}
+	if (player.getPosition().y < t_path.top()->m_shape.getPosition().y)
+	{
+		player.move(0, 1);
+	}
+	if (player.getPosition() == t_path.top()->m_shape.getPosition())
+	{
+		playerPath.pop();
+	}
+}
+
 void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 {
 	for (int index = 0; index < 2500; index++)
@@ -594,6 +638,8 @@ void Grid::render(sf::RenderWindow& t_window) // rendering the grid
 		//t_window.draw(m_cellsArray.at(index).m_cellcost);
 		//t_window.draw(m_cellId[index]);
 	}
+	t_window.draw(player);
 
 }
+
 
