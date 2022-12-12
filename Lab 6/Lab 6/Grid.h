@@ -74,6 +74,8 @@ public:
 	std::vector<int> m_neighbours;
 	
 	sf::VertexArray m_vertex;
+
+	sf::RectangleShape vectorLines;
 	
 
 };
@@ -105,17 +107,18 @@ public:
 	void horizontalCells(int t_point, int t_col, int t_cost);
 	void setCost(int t_p, int t_col, int t_cal, int t_cost);
 	void notTraversalsCost();
-	void callAstar(int t_start, int t_end);
+	void callAdaptedAstar(int t_start, int t_end);
 	void render(sf::RenderWindow& t_window);
-	void aStar(Cell* start, Cell* dest);
+	void AdaptedAstar(Cell* start, Cell* dest);
 	void generateHeatMap();
-	void generateVertexArrays(Cell* t_endpoint);
-	void setVectorDistance(sf::Vector2f t_goalPosition);
 	void resetPoints();
+	void markPath();
 
 	int makeStartPos(sf::RenderWindow& t_window);
 	int makeEndPos(sf::RenderWindow& t_window);
+	void clearPath();
 	Cell* findCellPoint(sf::Vector2f point);
+	sf::Vector2f FindEndPos(int t_Id);
 
 	std::vector<Cell>& returnAllCells();
 
@@ -124,11 +127,19 @@ public:
 	std::vector<std::vector<Cell>> m_cellsVectorArray;
 	std::vector<Cell> m_cellsArray;
 
+	sf::CircleShape player;
+
+	void movePlayer(std::stack<Cell*> t_path);
+	bool canPlayerMove;
+	std::stack<Cell*> playerPath;
+	int m = 1;
+
 	int m_maxRows = 50;
 	int m_maxCols = 50;
 	int m_currentRow;
 	int m_currentCol;
 	int randomCellId = 0;
+
 
 private:
 
