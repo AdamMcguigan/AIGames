@@ -1,17 +1,17 @@
+
 #ifndef FUZZY_H
 #define FUZZY_H
 
 #include <algorithm>
 
-namespace fuzzy
+namespace Fuzzy
 {
-	float grade(float t_value, float t_x0, float t_x1);
-	float triangle(float t_value, float t_x0, float t_x1, float t_x2);
-	float trapezoid(float t_value, float t_x0, float t_x1, float t_x2, float t_x3);
-
-	float AND(float t_a, float t_b);
-	float OR(float t_a, float t_b);
-	float NOT(float t_a);
-}
+	double FuzzyGrade(double value, double x0, double x1);
+	double FuzzyTriangle(double value, double x0, double x1, double x2);
+	double FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3);
+	double FuzzyAND(double A, double B);
+	double FuzzyOR(double A, double B);
+	double FuzzyNOT(double A);
+};
 
 #endif // !FUZZY_H

@@ -1,5 +1,10 @@
 ﻿  Fuzzy.cpp
   Game.cpp
+C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Lab 6\Game.cpp(67,50): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Lab 6\Game.cpp(68,45): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Lab 6\Game.cpp(90,28): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Lab 6\Game.cpp(125,33): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Lab 6\Game.cpp(131,32): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   main.cpp
   Generating Code...
   Lab 6.vcxproj -> C:\Users\adamm\Desktop\AI Labs\AI Final\AIGames\Lab 7\Debug\Lab 6.exe

@@ -1,67 +1,65 @@
 #include "Fuzzy.h"
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::grade(float t_value, float t_x0, float t_x1)
+double Fuzzy::FuzzyGrade(double value, double x0, double x1)
 {
-    if (t_value <= t_x0)
-        return 0.0f;
+    double result = 0;
+    double x = value;
 
-    else if (t_value > t_x1)
-        return 1.0f;
-
+    if (x <= x0)
+        result = 0;
+    else if (x > x1)
+        result = 1;
     else
-        return (t_value - t_x0) / (t_x1 - t_x0);
+        result = ((x - x0) / (x1 - x0));
+
+    return result;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::triangle(float t_value, float t_x0, float t_x1, float t_x2)
+double Fuzzy::FuzzyTriangle(double value, double x0, double x1, double x2)
 {
-    if (t_value <= t_x0 or t_value >= t_x2)
-        return 0.0f;
+    double result = 0;
+    double x = value;
 
-    else if (t_value == t_x1)
-        return 1.0f;
-
-    else if (t_value > t_x0 and t_value < t_x1)
-        return (t_value - t_x0) / (t_x1 - t_x0);
-
+    if ((x <= x0) || (x >= x2))
+        result = 0;
+    else if (x == x1)
+        result = 1;
+    else if ((x > x0) && (x < x1))
+        result = ((x - x0) / (x1 - x0));
     else
-        return (t_x2 - t_value) / (t_x2 - t_x1);
+        result = ((x2 - x) / (x2 - x1));
+
+    return result;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::trapezoid(float t_value, float t_x0, float t_x1,
-    float t_x2, float t_x3)
+double Fuzzy::FuzzyTrapezoid(double value, double x0, double x1, double x2, double x3)
 {
-    if (t_value <= t_x0 or t_value >= t_x3)
-        return 0.0f;
+    double result = 0;
+    double x = value;
 
-    else if (t_value >= t_x1 and t_value <= t_x2)
-        return 1.0f;
-
-    else if (t_value >= t_x0 and t_value <= t_x1)
-        return (t_value - t_x0) / (t_x1 - t_x0);
-
+    if ((x <= x0) || (x >= x3))
+        result = 0;
+    else if ((x >= x1) && (x <= x2))
+        result = 1;
+    else if ((x > x0) && (x < x1))
+        result = ((x - x0) / (x1 - x0));
     else
-        return (t_x3 - t_value) / (t_x3 - t_x2);
+        result = ((x3 - x) / (x3 - x2));
+
+    return result;
 }
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::AND(float t_a, float t_b)
+double Fuzzy::FuzzyAND(double A, double B)
 {
-    return std::min(t_a, t_b);
+    return std::min(A, B);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::OR(float t_a, float t_b)
+double Fuzzy::FuzzyOR(double A, double B)
 {
-    return std::max(t_a, t_b);
+    return std::max(A, B);
 }
 
-////////////////////////////////////////////////////////////////////////////////
-float fuzzy::NOT(float t_a)
+double Fuzzy::FuzzyNOT(double A)
 {
-    return 1.0f - t_a;
+    return 1.0 - A;
 }
-
-////////////////////////////////////////////////////////////////////////////////
