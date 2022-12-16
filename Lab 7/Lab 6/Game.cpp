@@ -90,6 +90,10 @@ void Game::processKeys(sf::Event t_event)
 		m_playerUnits = std::ceil((m_low * 10 + m_normal * 30 + m_high * 50) / (m_low + m_normal + m_high));
 		m_playerText.setString("The number of Units that should be deployed in response is " + std::to_string(m_playerUnits) + " Units");
 
+		m_defuzzyResult = 0;
+		m_defuzzyResult = (m_low * 10 + m_normal * 30 + m_high * 50) / (m_low + m_normal + m_high);
+		m_defuzzyText.setString("Defuzzy: " + std::to_string(m_defuzzyResult));
+
 	}
 	
 }
@@ -118,6 +122,7 @@ void Game::render()
 	m_window.draw(m_lowThreat);
 	m_window.draw(m_midThreat);
 	m_window.draw(m_highThreat);
+	m_window.draw(m_defuzzyText);
 
 	//Drawing the Player and Enemy
 	for (int i = 0; i < m_playerUnits; i++)
@@ -187,6 +192,14 @@ void Game::setupFontAndText()
 	m_highThreat.setOutlineColor(sf::Color::Red);
 	m_highThreat.setFillColor(sf::Color::Black);
 	m_highThreat.setOutlineThickness(3.0f);
+
+	m_defuzzyText.setFont(m_font);
+	m_defuzzyText.setString("Defuzzy: " + std::to_string(m_defuzzyResult));
+	m_defuzzyText.setPosition(80.0f, 180.0f);
+	m_defuzzyText.setCharacterSize(30);
+	m_defuzzyText.setOutlineColor(sf::Color::Green);
+	m_defuzzyText.setFillColor(sf::Color::Black);
+	m_defuzzyText.setOutlineThickness(3.0f);
 }
 
 void Game::setupSprite()

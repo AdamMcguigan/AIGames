@@ -68,6 +68,9 @@ private:
 	double m_normal;
 	double m_high;
 
+	//Defuzzy
+	double m_defuzzyResult = 0;
+
 	sf::Text m_enemyText; // text used for enemy info
 	sf::Text m_playerText; // text used for player info
 
@@ -75,6 +78,9 @@ private:
 	sf::Text m_midThreat;
 	sf::Text m_highThreat;
 	sf::Text tutorialText;
+	sf::Text m_defuzzyText;
+
+
 
 };
 
