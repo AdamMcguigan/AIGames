@@ -1,0 +1,3 @@
+﻿  Game.cpp
+C:\Users\adamm\Downloads\AI-Labs-master (1)\AI-Labs-master\Lab10\QLearningExampleForLab\QLearningExample\Game.cpp(13,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  QLearningExample.vcxproj -> C:\Users\adamm\Downloads\AI-Labs-master (1)\AI-Labs-master\Lab10\QLearningExampleForLab\Debug\QLearningExampleForLab.exe
